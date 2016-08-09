@@ -3,6 +3,8 @@ Use lambda expressions to effectively delegate dialog creation to activity to ac
 
 TODO: Add why
 
+[![Build Status](https://travis-ci.org/jraska/lambda-dialogs.svg?branch=master)](https://travis-ci.org/jraska/lambda-dialogs)
+
 ## Usage
 
 ```java
