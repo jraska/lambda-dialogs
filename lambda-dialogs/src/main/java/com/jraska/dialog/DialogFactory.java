@@ -6,8 +6,8 @@ import lombok.Builder;
 
 import java.io.Serializable;
 
-public interface DialogFactory<T extends FragmentActivity> extends Serializable {
-  Dialog onCreateDialog(T activity, FactoryData factoryData);
+public interface DialogFactory<A extends FragmentActivity> extends Serializable {
+  Dialog onCreateDialog(A activity, FactoryData factoryData);
 
   @Builder
   class FactoryData {

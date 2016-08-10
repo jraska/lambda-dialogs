@@ -14,7 +14,8 @@ public final class LambdaDialogFragment extends DialogFragment {
 
   private static final String DIALOG_FACTORY = "factory";
 
-  public static Builder builder(FragmentActivity fragmentActivity) {
+  @SuppressWarnings("unchecked")
+  public static <A extends FragmentActivity> Builder<A> builder(A fragmentActivity) {
     if (fragmentActivity == null) {
       throw new IllegalArgumentException("fragmentActivity cannot be null");
     }
@@ -47,7 +48,7 @@ public final class LambdaDialogFragment extends DialogFragment {
     return show(TAG, fragmentManager);
   }
 
-  public static class Builder {
+  public static class Builder<A extends FragmentActivity> {
     private final FragmentActivity fragmentActivity;
     private final DialogFieldsBundleAdapter fieldsBundleAdapter;
     private final DialogFields.Builder fieldsBuilder;
@@ -55,7 +56,7 @@ public final class LambdaDialogFragment extends DialogFragment {
     private boolean validateEagerly;
     private DialogFactory dialogFactory = new AlertDialogFactory();
 
-    private Builder(FragmentActivity fragmentActivity) {
+    private Builder(A fragmentActivity) {
       this.fragmentActivity = fragmentActivity;
       fieldsBundleAdapter = DialogFieldsBundleAdapter.INSTANCE;
       fieldsBuilder = DialogFields.builder();
@@ -69,82 +70,82 @@ public final class LambdaDialogFragment extends DialogFragment {
       return fragmentActivity.getSupportFragmentManager();
     }
 
-    public Builder validateEagerly(boolean validate) {
+    public Builder<A> validateEagerly(boolean validate) {
       validateEagerly = validate;
       return this;
     }
 
-    public <T extends FragmentActivity> Builder setDialogFactory(@NonNull DialogFactory<T> dialogFactory) {
+    public Builder<A> setDialogFactory(@NonNull DialogFactory<A> dialogFactory) {
       this.dialogFactory = dialogFactory;
       return this;
     }
 
-    public Builder setIcon(@DrawableRes int res) {
+    public Builder<A> setIcon(@DrawableRes int res) {
       fieldsBuilder.iconRes(res);
       return this;
     }
 
-    public Builder setTitle(CharSequence message) {
+    public Builder<A> setTitle(CharSequence message) {
       fieldsBuilder.title(message);
       return this;
     }
 
-    public Builder setTitle(@StringRes int res) {
+    public Builder<A> setTitle(@StringRes int res) {
       return setTitle(string(res));
     }
 
-    public Builder setCancelable(boolean cancelable) {
+    public Builder<A> setCancelable(boolean cancelable) {
       fieldsBuilder.cancelable(cancelable);
       return this;
     }
 
-    public Builder setMessage(CharSequence message) {
+    public Builder<A> setMessage(CharSequence message) {
       fieldsBuilder.message(message);
       return this;
     }
 
-    public Builder setMessage(@StringRes int res) {
+    public Builder<A> setMessage(@StringRes int res) {
       return setMessage(string(res));
     }
 
-    public <A extends FragmentActivity> Builder setPositiveMethod(ActivityAction<A> method) {
+    public Builder<A> setPositiveMethod(ActivityAction<A> method) {
       fieldsBuilder.positiveAction(method);
       return this;
     }
 
-    public Builder setPositiveText(CharSequence text) {
+    public Builder<A> setPositiveText(CharSequence text) {
       fieldsBuilder.positiveText(text);
       return this;
     }
 
-    public Builder setPositiveText(@StringRes int res) {
+    public Builder<A> setPositiveText(@StringRes int res) {
       return setPositiveText(string(res));
     }
 
-    public <A extends FragmentActivity> Builder setNeutralMethod(ActivityAction<A> method) {
+    public Builder<A> setNeutralMethod(ActivityAction<A> method) {
       fieldsBuilder.neutralAction(method);
       return this;
     }
 
-    public Builder setNeutralText(CharSequence text) {
+    public Builder<A> setNeutralText(CharSequence text) {
       fieldsBuilder.neutralText(text);
       return this;
     }
 
-    public Builder setNeutralText(@StringRes int res) {
+    public Builder<A> setNeutralText(@StringRes int res) {
       return setNeutralText(string(res));
     }
 
-    public <A extends FragmentActivity> Builder setNegativeMethod(ActivityAction<A> method) {
+    public Builder<A> setNegativeMethod(ActivityAction<A> method) {
       fieldsBuilder.negativeAction(method);
       return this;
     }
 
-    public Builder setNegativeText(@StringRes int res) {
+    public Builder<A> setNegativeText(@StringRes int res) {
       return setNegativeText(string(res));
     }
 
-    public Builder setNegativeText(CharSequence text) {
+    public Builder<A> setNegativeText(CharSequence text) {
       fieldsBuilder.negativeText(text);
       return this;
     }
