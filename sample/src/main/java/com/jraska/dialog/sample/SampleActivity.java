@@ -1,6 +1,7 @@
 package com.jraska.dialog.sample;
 
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -8,6 +9,7 @@ import android.view.MenuItem;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.jraska.dialog.LambdaDialogFragment;
 
 public class SampleActivity extends AppCompatActivity {
 
@@ -39,6 +41,33 @@ public class SampleActivity extends AppCompatActivity {
   }
 
   @OnClick(R.id.fab) void onFabClick() {
-    // TODO: 10/08/16 Do something
+    LambdaDialogFragment.builder(this)
+        .validateEagerly(BuildConfig.DEBUG)
+        .setIcon(android.R.drawable.ic_dialog_alert)
+        .setMessage("Test message")
+        .setTitle(R.string.app_name)
+        .setPositiveText(android.R.string.ok)
+        .setPositiveMethod(SampleActivity::onDialogOkClicked)
+        .setNegativeText(android.R.string.cancel)
+        .setNegativeMethod(SampleActivity::onDialogCancelClicked)
+        .setNeutralText("Neutral")
+        .setNeutralMethod(SampleActivity::onDialogNeutralClicked)
+        .show();
+  }
+
+  void onDialogOkClicked() {
+    showSnackbar("Ok clicked");
+  }
+
+  void onDialogNeutralClicked() {
+    showSnackbar("Neutral clicked");
+  }
+
+  void onDialogCancelClicked() {
+    showSnackbar("Cancel clicked");
+  }
+
+  void showSnackbar(String message) {
+    Snackbar.make(toolbar, message, Snackbar.LENGTH_SHORT).show();
   }
 }
