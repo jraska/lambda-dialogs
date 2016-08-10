@@ -6,6 +6,9 @@ Use lambda expressions to effectively delegate dialog creation to activity to ac
 TODO: Add why
 
 [![Build Status](https://travis-ci.org/jraska/lambda-dialogs.svg?branch=master)](https://travis-ci.org/jraska/lambda-dialogs)
+[![Sample](https://img.shields.io/badge/Download-Sample-blue.svg)](https://drive.google.com/open?id=0B0T1YjC17C-rQ1EyX05mTXNicUk)
+[![License](https://img.shields.io/badge/license-Apache%202.0-green.svg) ](https://github.com/jraska/lambda-dialogs/blob/master/LICENSE)
+[![Download](https://api.bintray.com/packages/jraska/maven/com.jraska%3Alambda-dialogs/images/download.svg) ](https://bintray.com/jraska/maven/com.jraska%3Alambda-dialogs/_latestVersion)
 
 ## Usage
 
