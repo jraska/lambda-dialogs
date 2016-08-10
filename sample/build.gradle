@@ -17,6 +17,21 @@ android {
     sourceCompatibility rootProject.ext.sourceCompatibility
     targetCompatibility rootProject.ext.sourceCompatibility
   }
+
+  buildTypes {
+    debug {
+      signingConfig signingConfigs.debug
+    }
+  }
+
+  signingConfigs {
+    debug {
+      storeFile file("debug.keystore")
+      storePassword "lambda-dialogs-sample"
+      keyAlias "lambda-dialogs-sample"
+      keyPassword "lambda-dialogs-sample"
+    }
+  }
 }
 
 apply plugin: 'me.tatarka.retrolambda'
