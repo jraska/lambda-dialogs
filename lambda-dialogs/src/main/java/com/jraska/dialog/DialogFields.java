@@ -12,11 +12,11 @@ public final class DialogFields {
   public final CharSequence title;
   public final CharSequence message;
   public final int iconRes;
-  public final ActivityAction positiveAction;
+  public final ActivityMethod positiveAction;
   public final CharSequence positiveText;
-  public final ActivityAction neutralAction;
+  public final ActivityMethod neutralAction;
   public final CharSequence neutralText;
-  public final ActivityAction negativeAction;
+  public final ActivityMethod negativeAction;
   public final CharSequence negativeText;
   public final boolean cancelable;
 

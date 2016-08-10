@@ -32,11 +32,11 @@ public class DialogFieldsBundleAdapterTest {
     EnhancedRandom random = EnhancedRandomBuilder
         .aNewEnhancedRandomBuilder()
         .randomize(CharSequence.class, new StringRandomizer())
-        .randomize(ActivityAction.class, (Randomizer) TestAction::new).build();
+        .randomize(ActivityMethod.class, (Randomizer) TestMethod::new).build();
     return random.nextObject(DialogFields.class);
   }
 
-  static class TestAction implements ActivityAction {
+  static class TestMethod implements ActivityMethod {
     @Override public void call(FragmentActivity activity) {
       throw new UnsupportedOperationException();
     }

@@ -34,11 +34,11 @@ final class DialogFieldsBundleAdapter {
         .title(bundle.getCharSequence(TITLE))
         .message(bundle.getCharSequence(MESSAGE))
         .iconRes(bundle.getInt(ICON_RES))
-        .positiveAction((ActivityAction) bundle.getSerializable(POSITIVE_PROVIDER))
+        .positiveAction((ActivityMethod) bundle.getSerializable(POSITIVE_PROVIDER))
         .positiveText(bundle.getCharSequence(POSITIVE_TEXT))
-        .neutralAction((ActivityAction) bundle.getSerializable(NEUTRAL_PROVIDER))
+        .neutralAction((ActivityMethod) bundle.getSerializable(NEUTRAL_PROVIDER))
         .neutralText(bundle.getCharSequence(NEUTRAL_TEXT))
-        .negativeAction((ActivityAction) bundle.getSerializable(NEGATIVE_PROVIDER))
+        .negativeAction((ActivityMethod) bundle.getSerializable(NEGATIVE_PROVIDER))
         .negativeText(bundle.getCharSequence(NEGATIVE_TEXT))
         .build();
   }

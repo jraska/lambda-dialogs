@@ -108,7 +108,7 @@ public final class LambdaDialogFragment extends DialogFragment {
       return message(string(res));
     }
 
-    public Builder<A> positiveMethod(ActivityAction<A> method) {
+    public Builder<A> positiveMethod(ActivityMethod<A> method) {
       fieldsBuilder.positiveAction(method);
       return this;
     }
@@ -122,7 +122,7 @@ public final class LambdaDialogFragment extends DialogFragment {
       return positiveText(string(res));
     }
 
-    public Builder<A> neutralMethod(ActivityAction<A> method) {
+    public Builder<A> neutralMethod(ActivityMethod<A> method) {
       fieldsBuilder.neutralAction(method);
       return this;
     }
@@ -136,7 +136,7 @@ public final class LambdaDialogFragment extends DialogFragment {
       return neutralText(string(res));
     }
 
-    public Builder<A> negativeMethod(ActivityAction<A> method) {
+    public Builder<A> negativeMethod(ActivityMethod<A> method) {
       fieldsBuilder.negativeAction(method);
       return this;
     }

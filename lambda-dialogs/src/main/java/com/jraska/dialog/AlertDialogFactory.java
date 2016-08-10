@@ -21,7 +21,7 @@ public final class AlertDialogFactory implements DialogFactory {
   }
 
   @SuppressWarnings("unchecked")
-  DialogInterface.OnClickListener call(ActivityAction action, FragmentActivity activity) {
+  DialogInterface.OnClickListener call(ActivityMethod action, FragmentActivity activity) {
     if (action == null) {
       return null;
     } else {
