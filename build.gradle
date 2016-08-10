@@ -19,3 +19,13 @@ allprojects {
 task clean(type: Delete) {
   delete rootProject.buildDir
 }
+
+ext {
+  version = '0.1.0'
+  versionCode = 1
+  minSdkVersion = 15
+  compileSdkVersion = 24
+  targetSdkVersion = compileSdkVersion
+  buildToolsVersion = '24.0.1'
+  sourceCompatibility = JavaVersion.VERSION_1_8
+}
