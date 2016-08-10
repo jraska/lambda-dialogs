@@ -127,7 +127,7 @@ public final class LambdaDialogFragment extends DialogFragment {
     }
 
     public Builder setNeutralText(CharSequence text) {
-      fieldsBuilder.negativeText(text);
+      fieldsBuilder.neutralText(text);
       return this;
     }
 
