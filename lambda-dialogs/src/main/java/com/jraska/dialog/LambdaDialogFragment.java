@@ -75,77 +75,77 @@ public final class LambdaDialogFragment extends DialogFragment {
       return this;
     }
 
-    public Builder<A> setDialogFactory(@NonNull DialogFactory<A> dialogFactory) {
+    public Builder<A> dialogFactory(@NonNull DialogFactory<A> dialogFactory) {
       this.dialogFactory = dialogFactory;
       return this;
     }
 
-    public Builder<A> setIcon(@DrawableRes int res) {
+    public Builder<A> icon(@DrawableRes int res) {
       fieldsBuilder.iconRes(res);
       return this;
     }
 
-    public Builder<A> setTitle(CharSequence message) {
+    public Builder<A> title(CharSequence message) {
       fieldsBuilder.title(message);
       return this;
     }
 
-    public Builder<A> setTitle(@StringRes int res) {
-      return setTitle(string(res));
+    public Builder<A> title(@StringRes int res) {
+      return title(string(res));
     }
 
-    public Builder<A> setCancelable(boolean cancelable) {
+    public Builder<A> cancelable(boolean cancelable) {
       fieldsBuilder.cancelable(cancelable);
       return this;
     }
 
-    public Builder<A> setMessage(CharSequence message) {
+    public Builder<A> message(CharSequence message) {
       fieldsBuilder.message(message);
       return this;
     }
 
-    public Builder<A> setMessage(@StringRes int res) {
-      return setMessage(string(res));
+    public Builder<A> message(@StringRes int res) {
+      return message(string(res));
     }
 
-    public Builder<A> setPositiveMethod(ActivityAction<A> method) {
+    public Builder<A> positiveMethod(ActivityAction<A> method) {
       fieldsBuilder.positiveAction(method);
       return this;
     }
 
-    public Builder<A> setPositiveText(CharSequence text) {
+    public Builder<A> positiveText(CharSequence text) {
       fieldsBuilder.positiveText(text);
       return this;
     }
 
-    public Builder<A> setPositiveText(@StringRes int res) {
-      return setPositiveText(string(res));
+    public Builder<A> positiveText(@StringRes int res) {
+      return positiveText(string(res));
     }
 
-    public Builder<A> setNeutralMethod(ActivityAction<A> method) {
+    public Builder<A> neutralMethod(ActivityAction<A> method) {
       fieldsBuilder.neutralAction(method);
       return this;
     }
 
-    public Builder<A> setNeutralText(CharSequence text) {
+    public Builder<A> neutralText(CharSequence text) {
       fieldsBuilder.neutralText(text);
       return this;
     }
 
-    public Builder<A> setNeutralText(@StringRes int res) {
-      return setNeutralText(string(res));
+    public Builder<A> neutralText(@StringRes int res) {
+      return neutralText(string(res));
     }
 
-    public Builder<A> setNegativeMethod(ActivityAction<A> method) {
+    public Builder<A> negativeMethod(ActivityAction<A> method) {
       fieldsBuilder.negativeAction(method);
       return this;
     }
 
-    public Builder<A> setNegativeText(@StringRes int res) {
-      return setNegativeText(string(res));
+    public Builder<A> negativeText(@StringRes int res) {
+      return negativeText(string(res));
     }
 
-    public Builder<A> setNegativeText(CharSequence text) {
+    public Builder<A> negativeText(CharSequence text) {
       fieldsBuilder.negativeText(text);
       return this;
     }

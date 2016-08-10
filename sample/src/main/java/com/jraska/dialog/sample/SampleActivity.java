@@ -43,15 +43,15 @@ public class SampleActivity extends AppCompatActivity {
   @OnClick(R.id.fab) void onFabClick() {
     LambdaDialogFragment.builder(this)
         .validateEagerly(BuildConfig.DEBUG)
-        .setIcon(android.R.drawable.ic_dialog_alert)
-        .setMessage("Test message")
-        .setTitle(R.string.app_name)
-        .setPositiveText(android.R.string.ok)
-        .setPositiveMethod(SampleActivity::onDialogOkClicked)
-        .setNegativeText(android.R.string.cancel)
-        .setNegativeMethod(SampleActivity::onDialogCancelClicked)
-        .setNeutralText("Neutral")
-        .setNeutralMethod(SampleActivity::onDialogNeutralClicked)
+        .icon(android.R.drawable.ic_dialog_alert)
+        .message("Test message")
+        .title(R.string.app_name)
+        .positiveText(android.R.string.ok)
+        .positiveMethod(SampleActivity::onDialogOkClicked)
+        .negativeText(android.R.string.cancel)
+        .negativeMethod(SampleActivity::onDialogCancelClicked)
+        .neutralText("Neutral")
+        .neutralMethod(SampleActivity::onDialogNeutralClicked)
         .show();
   }
 

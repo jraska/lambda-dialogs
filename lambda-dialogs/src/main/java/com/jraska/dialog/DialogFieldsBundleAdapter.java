@@ -5,14 +5,14 @@ import android.os.Bundle;
 final class DialogFieldsBundleAdapter {
   private static final String TITLE = "title";
   private static final String MESSAGE = "message";
-  private static final String ICON_RES = "setIcon";
+  private static final String ICON_RES = "icon";
   private static final String POSITIVE_PROVIDER = "positiveAction";
   private static final String POSITIVE_TEXT = "positiveText";
   private static final String NEUTRAL_PROVIDER = "neutralMethod";
   private static final String NEUTRAL_TEXT = "neutralText";
-  private static final String NEGATIVE_PROVIDER = "setNegativeMethod";
+  private static final String NEGATIVE_PROVIDER = "negativeMethod";
   private static final String NEGATIVE_TEXT = "negativeText";
-  private static final String CANCELABLE = "setCancelable";
+  private static final String CANCELABLE = "cancelable";
 
   static final DialogFieldsBundleAdapter INSTANCE = new DialogFieldsBundleAdapter();
 
