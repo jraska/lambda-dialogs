@@ -3,8 +3,6 @@ Use lambda expressions to effectively delegate dialog creation to activity to ac
 
 **Library is not stable yet and API is likely to change**
 
-TODO: Add why
-
 [![Build Status](https://travis-ci.org/jraska/lambda-dialogs.svg?branch=master)](https://travis-ci.org/jraska/lambda-dialogs)
 [![Sample](https://img.shields.io/badge/Download-Sample-blue.svg)](https://drive.google.com/open?id=0B0T1YjC17C-rQ1EyX05mTXNicUk)
 [![License](https://img.shields.io/badge/license-Apache%202.0-green.svg) ](https://github.com/jraska/lambda-dialogs/blob/master/LICENSE)
@@ -20,10 +18,12 @@ TODO
 
 Grab via Gradle:
 ```groovy
-TODO
-<!--compile 'com.jraska:lambda-dialogs:0.1.0'-->
+compile 'com.jraska:lambda-dialogs:0.2.0'
 ```
 
+## Why lambda dialogs?
+
+TODO: Add why
 
 ## License
 
