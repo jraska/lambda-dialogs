@@ -14,15 +14,6 @@ public final class LambdaDialogFragment extends DialogFragment {
 
   private static final String DIALOG_FACTORY = "factory";
 
-  @SuppressWarnings("unchecked")
-  public static <A extends FragmentActivity> Builder<A> builder(A fragmentActivity) {
-    if (fragmentActivity == null) {
-      throw new IllegalArgumentException("fragmentActivity cannot be null");
-    }
-
-    return new Builder(fragmentActivity);
-  }
-
   private final DialogFieldsBundleAdapter fieldsAdapter = DialogFieldsBundleAdapter.INSTANCE;
 
   DialogFields fields() {
@@ -36,7 +27,7 @@ public final class LambdaDialogFragment extends DialogFragment {
   @NonNull
   @Override @SuppressWarnings("unchecked")
   public Dialog onCreateDialog(Bundle savedInstanceState) {
-    return factory().onCreateDialog(getActivity(), new DialogFactory.FactoryData(fields()));
+    return factory().onCreateDialog(getActivity(), fields());
   }
 
   private LambdaDialogFragment show(String tag, FragmentManager fragmentManager) {
@@ -56,7 +47,7 @@ public final class LambdaDialogFragment extends DialogFragment {
     private boolean validateEagerly;
     private DialogFactory dialogFactory = new AlertDialogFactory();
 
-    private Builder(A fragmentActivity) {
+    Builder(A fragmentActivity) {
       this.fragmentActivity = fragmentActivity;
       fieldsBundleAdapter = DialogFieldsBundleAdapter.INSTANCE;
       fieldsBuilder = DialogFields.builder();

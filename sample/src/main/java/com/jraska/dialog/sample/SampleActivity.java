@@ -9,7 +9,7 @@ import android.view.MenuItem;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import com.jraska.dialog.LambdaDialogFragment;
+import com.jraska.dialog.LambdaDialog;
 
 public class SampleActivity extends AppCompatActivity {
 
@@ -33,15 +33,11 @@ public class SampleActivity extends AppCompatActivity {
   public boolean onOptionsItemSelected(MenuItem item) {
     int id = item.getItemId();
 
-    if (id == R.id.action_settings) {
-      return true;
-    }
-
-    return super.onOptionsItemSelected(item);
+    return id == R.id.action_settings || super.onOptionsItemSelected(item);
   }
 
   @OnClick(R.id.fab) void onFabClick() {
-    LambdaDialogFragment.builder(this)
+    LambdaDialog.builder(this)
         .validateEagerly(BuildConfig.DEBUG)
         .icon(android.R.drawable.ic_dialog_alert)
         .message("Test message")

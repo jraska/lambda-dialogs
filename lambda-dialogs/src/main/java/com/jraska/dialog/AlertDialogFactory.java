@@ -6,9 +6,7 @@ import android.support.v7.app.AlertDialog;
 
 public final class AlertDialogFactory implements DialogFactory {
   @Override
-  public AlertDialog onCreateDialog(FragmentActivity activity, FactoryData factoryData) {
-    DialogFields fields = factoryData.fields;
-
+  public final AlertDialog onCreateDialog(FragmentActivity activity, DialogFields fields) {
     return new AlertDialog.Builder(activity)
         .setTitle(fields.title)
         .setMessage(fields.message)
