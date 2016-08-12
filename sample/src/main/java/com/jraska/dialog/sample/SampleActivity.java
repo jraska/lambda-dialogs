@@ -1,7 +1,9 @@
 package com.jraska.dialog.sample;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -9,7 +11,7 @@ import android.view.MenuItem;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import com.jraska.dialog.LambdaDialog;
+import com.jraska.dialog.LambdaDialogs;
 
 public class SampleActivity extends AppCompatActivity {
 
@@ -33,11 +35,22 @@ public class SampleActivity extends AppCompatActivity {
   public boolean onOptionsItemSelected(MenuItem item) {
     int id = item.getItemId();
 
-    return id == R.id.action_settings || super.onOptionsItemSelected(item);
+    if (id == R.id.action_settings) {
+      showDelegateDialog();
+      return true;
+    }
+
+    return super.onOptionsItemSelected(item);
+  }
+
+  private void showDelegateDialog() {
+    LambdaDialogs.delegate(this)
+        .method(SampleActivity::createDialog)
+        .show();
   }
 
   @OnClick(R.id.fab) void onFabClick() {
-    LambdaDialog.builder(this)
+    LambdaDialogs.builder(this)
         .validateEagerly(BuildConfig.DEBUG)
         .icon(android.R.drawable.ic_dialog_alert)
         .message("Test message")
@@ -65,5 +78,12 @@ public class SampleActivity extends AppCompatActivity {
 
   void showSnackbar(String message) {
     Snackbar.make(toolbar, message, Snackbar.LENGTH_SHORT).show();
+  }
+
+  Dialog createDialog() {
+    // TODO: 12/08/16 add material dialogs example
+    return new AlertDialog.Builder(this)
+        .setTitle("Example title")
+        .show();
   }
 }
