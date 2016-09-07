@@ -33,20 +33,22 @@ public class SampleActivity extends AppCompatActivity {
 
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
-    int id = item.getItemId();
+    switch (item.getItemId()) {
+      case R.id.action_delegate_dialog:
+        showDelegateDialog();
+        return true;
 
-    if (id == R.id.action_settings) {
-      showDelegateDialog();
-      return true;
+      case R.id.action_delegate_dialog_with_parameter:
+        showDelegateDialogWithParameter();
+        return true;
+
+      case R.id.action_delegate_dialog_with_method:
+        showDelegateDialogWithMethod();
+        return true;
+
+      default:
+        return super.onOptionsItemSelected(item);
     }
-
-    return super.onOptionsItemSelected(item);
-  }
-
-  private void showDelegateDialog() {
-    LambdaDialogs.delegate(this)
-        .method(SampleActivity::createDialog)
-        .show();
   }
 
   @OnClick(R.id.fab) void onFabClick() {
@@ -76,14 +78,41 @@ public class SampleActivity extends AppCompatActivity {
     showSnackbar("Cancel clicked");
   }
 
-  void showSnackbar(String message) {
-    Snackbar.make(toolbar, message, Snackbar.LENGTH_SHORT).show();
+  private void showDelegateDialog() {
+    LambdaDialogs.delegate(this)
+        .method(SampleActivity::createDialog)
+        .validateEagerly(BuildConfig.DEBUG)
+        .show();
+  }
+
+  private void showDelegateDialogWithParameter() {
+    LambdaDialogs.delegate(this)
+        .parameter("Parameter title")
+        .method(SampleActivity::createDialog)
+        .validateEagerly(BuildConfig.DEBUG)
+        .show();
+  }
+
+  private void showDelegateDialogWithMethod() {
+    LambdaDialogs.delegate(this, SampleActivity::createDialog)
+        .validateEagerly(BuildConfig.DEBUG)
+        .show();
   }
 
   Dialog createDialog() {
+    return new AlertDialog.Builder(this)
+        .setTitle("static title")
+        .show();
+  }
+
+  Dialog createDialog(String parameterTitle) {
     // TODO: 12/08/16 add material dialogs example
     return new AlertDialog.Builder(this)
-        .setTitle("Example title")
+        .setTitle(parameterTitle)
         .show();
+  }
+
+  void showSnackbar(String message) {
+    Snackbar.make(toolbar, message, Snackbar.LENGTH_SHORT).show();
   }
 }
