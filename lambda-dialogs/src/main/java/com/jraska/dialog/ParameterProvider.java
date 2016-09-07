@@ -1,6 +1,7 @@
 package com.jraska.dialog;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 
 import java.io.Serializable;
 
@@ -24,12 +25,33 @@ class Empty<P> implements ParameterProvider<P> {
   }
 }
 
-class StringProvider implements ParameterProvider<String> {
-  @Override public String get(Bundle args) {
-    return args.getString("text");
+class ParcelableProvider<P extends Parcelable> implements ParameterProvider<P> {
+  @SuppressWarnings("unchecked")
+  static <P> ParameterProvider<P> get() {
+    return new ParcelableProvider();
   }
 
-  @Override public void putTo(Bundle bundle, String s) {
-    bundle.putString("text", s);
+  @Override public P get(Bundle args) {
+    return args.getParcelable("parcelable");
+  }
+
+  @Override public void putTo(Bundle bundle, P parcelable) {
+    bundle.putParcelable("parcelable", parcelable);
+  }
+}
+
+class SerializableProvider<P extends Serializable> implements ParameterProvider<P> {
+  @SuppressWarnings("unchecked")
+  static <P extends Serializable> SerializableProvider<P> get() {
+    return new SerializableProvider();
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override public P get(Bundle args) {
+    return (P) args.getSerializable("serializable");
+  }
+
+  @Override public void putTo(Bundle bundle, P serializable) {
+    bundle.putSerializable("serializable", serializable);
   }
 }

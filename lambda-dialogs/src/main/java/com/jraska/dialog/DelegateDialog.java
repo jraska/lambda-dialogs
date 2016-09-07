@@ -2,10 +2,13 @@ package com.jraska.dialog;
 
 import android.app.Dialog;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+
+import java.io.Serializable;
 
 public final class DelegateDialog extends DialogFragment {
   static final String TAG = DelegateDialog.class.getSimpleName();
@@ -47,30 +50,41 @@ public final class DelegateDialog extends DialogFragment {
       return new Builder<>(fragmentActivity, wrapDelegate(method), Empty.get(), null);
     }
 
-    public BuilderWithStringDelegate<A> parameter(String value) {
+    public <P extends Parcelable> BuilderWithParameterDelegate<A, P> parameter(P value) {
       if (value == null) {
         throw new IllegalArgumentException("method cannot be null");
       }
 
-      return new BuilderWithStringDelegate<>(fragmentActivity, value);
+      return new BuilderWithParameterDelegate<>(fragmentActivity, ParcelableProvider.get(), value);
+    }
+
+    public <P extends Serializable> BuilderWithParameterDelegate<A, P> parameter(P value) {
+      if (value == null) {
+        throw new IllegalArgumentException("method cannot be null");
+      }
+
+      return new BuilderWithParameterDelegate<>(fragmentActivity, SerializableProvider.get(), value);
     }
   }
 
-  public static class BuilderWithStringDelegate<A extends FragmentActivity> {
+  public static class BuilderWithParameterDelegate<A extends FragmentActivity, P> {
     private final FragmentActivity fragmentActivity;
-    private final String value;
+    private final ParameterProvider<P> provider;
+    private final P value;
 
-    BuilderWithStringDelegate(FragmentActivity fragmentActivity, String value) {
+    BuilderWithParameterDelegate(FragmentActivity fragmentActivity,
+                                 ParameterProvider<P> provider, P value) {
       this.fragmentActivity = fragmentActivity;
+      this.provider = provider;
       this.value = value;
     }
 
-    public Builder method(DialogDelegateParametrized<A, String> delegate) {
+    public Builder method(DialogDelegateParametrized<A, P> delegate) {
       if (delegate == null) {
         throw new IllegalArgumentException("delegate cannot be null");
       }
 
-      return new Builder<>(fragmentActivity, delegate, new StringProvider(), value);
+      return new Builder<>(fragmentActivity, delegate, provider, value);
     }
   }
 
