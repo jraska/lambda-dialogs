@@ -9,8 +9,8 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 
-public final class LambdaDialog extends DialogFragment {
-  public static final String TAG = LambdaDialog.class.getSimpleName();
+public final class FieldsDialog extends DialogFragment {
+  public static final String TAG = FieldsDialog.class.getSimpleName();
 
   private static final String DIALOG_FACTORY = "factory";
 
@@ -137,7 +137,7 @@ public final class LambdaDialog extends DialogFragment {
       return this;
     }
 
-    public LambdaDialog build() {
+    public FieldsDialog build() {
       DialogFields dialogFields = fieldsBuilder.build();
 
       if (validateEagerly) {
@@ -151,7 +151,7 @@ public final class LambdaDialog extends DialogFragment {
       arguments.putSerializable(DIALOG_FACTORY, dialogFactory);
       fieldsBundleAdapter.intoBundle(dialogFields, arguments);
 
-      LambdaDialog fragment = new LambdaDialog();
+      FieldsDialog fragment = new FieldsDialog();
       fragment.setArguments(arguments);
       return fragment;
     }
