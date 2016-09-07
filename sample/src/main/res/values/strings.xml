@@ -2,5 +2,4 @@
     <string name="app_name">sample</string>
   <string name="action_delegate_dialog">Delegate Dialog</string>
   <string name="action_delegate_dialog_with_parameter">Delegate with parameter</string>
-  <string name="action_delegate_dialog_with_method">Delegate Method</string>
 </resources>

@@ -10,9 +10,4 @@
       android:id="@+id/action_delegate_dialog_with_parameter"
       android:title="@string/action_delegate_dialog_with_parameter"
       app:showAsAction="never" />
-
-  <item
-      android:id="@+id/action_delegate_dialog_with_method"
-      android:title="@string/action_delegate_dialog_with_method"
-      app:showAsAction="never" />
 </menu>

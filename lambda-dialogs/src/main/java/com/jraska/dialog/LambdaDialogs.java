@@ -18,19 +18,4 @@ public final class LambdaDialogs {
 
     return new DelegateDialog.BuilderNoDelegate<>(activity);
   }
-
-  public static <A extends FragmentActivity> DelegateDialog.Builder delegate(
-      A activity, DialogDelegate<A> delegate) {
-
-    if (activity == null) {
-      throw new IllegalArgumentException("fragmentActivity cannot be null");
-    }
-
-    if (delegate == null) {
-      throw new IllegalArgumentException("delegate cannot be null");
-    }
-
-    return new DelegateDialog.Builder<>(activity, DelegateDialog.wrapDelegate(delegate),
-        Empty.get(), null);
-  }
 }

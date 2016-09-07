@@ -42,10 +42,6 @@ public class SampleActivity extends AppCompatActivity {
         showDelegateDialogWithParameter();
         return true;
 
-      case R.id.action_delegate_dialog_with_method:
-        showDelegateDialogWithMethod();
-        return true;
-
       default:
         return super.onOptionsItemSelected(item);
     }
@@ -89,12 +85,6 @@ public class SampleActivity extends AppCompatActivity {
     LambdaDialogs.delegate(this)
         .parameter("Parameter title")
         .method(SampleActivity::createDialog)
-        .validateEagerly(BuildConfig.DEBUG)
-        .show();
-  }
-
-  private void showDelegateDialogWithMethod() {
-    LambdaDialogs.delegate(this, SampleActivity::createDialog)
         .validateEagerly(BuildConfig.DEBUG)
         .show();
   }
