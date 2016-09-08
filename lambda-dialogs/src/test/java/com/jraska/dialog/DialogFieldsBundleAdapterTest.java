@@ -8,13 +8,13 @@ import io.github.benas.randombeans.api.Randomizer;
 import io.github.benas.randombeans.randomizers.text.StringRandomizer;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
+@RunWith(RobolectricTestRunner.class)
+@Config(manifest = Config.NONE)
 public class DialogFieldsBundleAdapterTest {
   @Test
   public void putsIntoBundleCorrectly() {
