@@ -46,7 +46,7 @@ Use lambda expressions to effectively delegate dialog creation to activity to ac
 
 Grab via Gradle:
 ```groovy
-compile 'com.jraska:lambda-dialogs:0.1.0'
+compile 'com.jraska:lambda-dialogs:0.2.0'
 ```
 
 ## Why lambda dialogs?
