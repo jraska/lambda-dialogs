@@ -30,24 +30,24 @@ public class SampleActivity extends AppCompatActivity {
         .message("Test message")
         .title(R.string.app_name)
         .positiveText(android.R.string.ok)
-        .positiveMethod(SampleActivity::onDialogOkClicked)
+        .positiveMethod(SampleActivity::onDialogPositiveClicked)
         .negativeText(android.R.string.cancel)
-        .negativeMethod(SampleActivity::onDialogCancelClicked)
+        .negativeMethod(SampleActivity::onDialogNegativeClicked)
         .neutralText("Neutral")
         .neutralMethod(SampleActivity::onDialogNeutralClicked)
         .show();
   }
 
-  void onDialogOkClicked() {
-    showSnackbar("Ok clicked");
+  void onDialogPositiveClicked() {
+    showSnackbar("Positive clicked");
   }
 
   void onDialogNeutralClicked() {
     showSnackbar("Neutral clicked");
   }
 
-  void onDialogCancelClicked() {
-    showSnackbar("Cancel clicked");
+  void onDialogNegativeClicked() {
+    showSnackbar("Negative clicked");
   }
 
   @OnClick(R.id.delegate_dialog)
@@ -55,6 +55,12 @@ public class SampleActivity extends AppCompatActivity {
     LambdaDialogs.delegate(this)
         .method(SampleActivity::createDialog)
         .validateEagerly(BuildConfig.DEBUG)
+        .show();
+  }
+
+  Dialog createDialog() {
+    return new AlertDialog.Builder(this)
+        .setTitle("static title")
         .show();
   }
 
@@ -67,16 +73,10 @@ public class SampleActivity extends AppCompatActivity {
         .show();
   }
 
-  Dialog createDialog() {
-    return new AlertDialog.Builder(this)
-        .setTitle("static title")
-        .show();
-  }
-
-  Dialog createDialog(String parameterTitle) {
+  Dialog createDialog(String title) {
     // TODO: 12/08/16 add material dialogs example
     return new AlertDialog.Builder(this)
-        .setTitle(parameterTitle)
+        .setTitle(title)
         .show();
   }
 
