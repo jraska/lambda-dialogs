@@ -11,7 +11,35 @@ Use lambda expressions to effectively delegate dialog creation to activity to ac
 ## Usage
 
 ```java
-TODO
+ // Simple dialog with basic fields delegating the callbacks to current activity
+ LambdaDialogs.builder(this)
+        .positiveText(android.R.string.ok)
+        .positiveMethod(SampleActivity::onDialogPositiveClicked)
+        .negativeText(android.R.string.cancel)
+        .negativeMethod(SampleActivity::onDialogNegativeClicked)
+        .neutralText("Neutral")
+        .neutralMethod(SampleActivity::onDialogNeutralClicked)
+        ...
+        .show();
+        
+ ```
+ ```java
+ // Delegate creation of dialog to activity to do more complex stuff
+ LambdaDialogs.delegate(this)
+         .parameter("Parameter title")
+         .method(SampleActivity::createDialog)
+         .validateEagerly(BuildConfig.DEBUG)
+         .show();
+ 
+ 
+ Dialog createDialog(String title) {
+   return new AlertDialog.Builder(this)
+       .setTitle(title)
+       ... 
+       .show();
+ }
+
+ 
 ```
 
 ## Download
@@ -29,7 +57,7 @@ if you implement dialog fragment you need to put logic with dependencies into di
 some callback mechanism back to Activity.
 
 Lambda Dialogs use power of method references to delegate dialog functionality back to Activities. All the logic 
-remains in Activity (or better in some UseCase/Presenter) and dialog events are only delegated to current instance 
+remains in Activity and dialog events are only delegated to current instance 
 of Activity through method references.
 
 ## License
