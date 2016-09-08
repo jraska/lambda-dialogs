@@ -6,8 +6,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -23,28 +21,6 @@ public class SampleActivity extends AppCompatActivity {
     setContentView(R.layout.activity_sample);
     ButterKnife.bind(this);
     setSupportActionBar(toolbar);
-  }
-
-  @Override
-  public boolean onCreateOptionsMenu(Menu menu) {
-    getMenuInflater().inflate(R.menu.menu_sample, menu);
-    return true;
-  }
-
-  @Override
-  public boolean onOptionsItemSelected(MenuItem item) {
-    switch (item.getItemId()) {
-      case R.id.action_delegate_dialog:
-        showDelegateDialog();
-        return true;
-
-      case R.id.action_delegate_dialog_with_parameter:
-        showDelegateDialogWithParameter();
-        return true;
-
-      default:
-        return super.onOptionsItemSelected(item);
-    }
   }
 
   @OnClick(R.id.fab) void onFabClick() {
@@ -74,14 +50,16 @@ public class SampleActivity extends AppCompatActivity {
     showSnackbar("Cancel clicked");
   }
 
-  private void showDelegateDialog() {
+  @OnClick(R.id.delegate_dialog)
+  void showDelegateDialog() {
     LambdaDialogs.delegate(this)
         .method(SampleActivity::createDialog)
         .validateEagerly(BuildConfig.DEBUG)
         .show();
   }
 
-  private void showDelegateDialogWithParameter() {
+  @OnClick(R.id.delegate_dialog_with_parameter)
+  void showDelegateDialogWithParameter() {
     LambdaDialogs.delegate(this)
         .parameter("Parameter title")
         .method(SampleActivity::createDialog)
