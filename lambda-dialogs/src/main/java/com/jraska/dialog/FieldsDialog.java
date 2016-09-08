@@ -16,16 +16,17 @@ public final class FieldsDialog extends DialogFragment {
 
   private final DialogFieldsBundleAdapter fieldsAdapter = DialogFieldsBundleAdapter.INSTANCE;
 
-  DialogFields fields() {
+  private DialogFields fields() {
     return fieldsAdapter.fromBundle(getArguments());
   }
 
-  DialogFactory factory() {
-    return (DialogFactory) getArguments().getSerializable(DIALOG_FACTORY);
+  @SuppressWarnings("unchecked")
+  private <T> ActivityDialogMethodParam<FragmentActivity, T> factory() {
+    return (ActivityDialogMethodParam) getArguments().getSerializable(DIALOG_FACTORY);
   }
 
   @NonNull
-  @Override @SuppressWarnings("unchecked")
+  @Override
   public Dialog onCreateDialog(Bundle savedInstanceState) {
     return factory().onCreateDialog(getActivity(), fields());
   }
@@ -40,7 +41,7 @@ public final class FieldsDialog extends DialogFragment {
     private final DialogFields.Builder fieldsBuilder;
 
     private boolean validateEagerly;
-    private DialogFactory dialogFactory = new AlertDialogFactory();
+    private ActivityDialogMethodParam<A, DialogFields> dialogFactory = new AlertDialogFactory<>();
     private final SerializableValidator validator = new SerializableValidator();
 
     Builder(A fragmentActivity) {
@@ -62,8 +63,10 @@ public final class FieldsDialog extends DialogFragment {
       return this;
     }
 
-    public Builder<A> dialogFactory(@NonNull DialogFactory<A> dialogFactory) {
-      this.dialogFactory = dialogFactory;
+    public Builder<A> dialogFactory(@NonNull ActivityDialogMethodParam<A, DialogFields> factory) {
+      Preconditions.argumentNotNull(factory, "factory");
+
+      this.dialogFactory = factory;
       return this;
     }
 
@@ -161,7 +164,9 @@ public final class FieldsDialog extends DialogFragment {
     }
 
     public void show(String tag) {
-       build().show(fragmentManager(), tag);
+      Preconditions.argumentNotNull(tag, "tag");
+
+      build().show(fragmentManager(), tag);
     }
   }
 

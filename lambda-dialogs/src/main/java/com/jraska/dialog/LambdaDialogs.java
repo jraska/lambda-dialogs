@@ -3,19 +3,18 @@ package com.jraska.dialog;
 import android.support.v4.app.FragmentActivity;
 
 public final class LambdaDialogs {
+  private LambdaDialogs() {
+  }
+
   public static <A extends FragmentActivity> FieldsDialog.Builder<A> builder(A activity) {
-    if (activity == null) {
-      throw new IllegalArgumentException("fragmentActivity cannot be null");
-    }
+    Preconditions.argumentNotNull(activity, "activity");
 
     return new FieldsDialog.Builder<>(activity);
   }
 
-  public static <A extends FragmentActivity> DelegateDialog.BuilderNoDelegate<A> delegate(A activity) {
-    if (activity == null) {
-      throw new IllegalArgumentException("activity is null");
-    }
+  public static <A extends FragmentActivity> DelegateDialog.BuilderNoMethod<A> delegate(A activity) {
+    Preconditions.argumentNotNull(activity, "activity");
 
-    return new DelegateDialog.BuilderNoDelegate<>(activity);
+    return new DelegateDialog.BuilderNoMethod<>(activity);
   }
 }

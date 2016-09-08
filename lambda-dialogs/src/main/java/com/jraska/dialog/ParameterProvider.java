@@ -11,7 +11,7 @@ interface ParameterProvider<Param> extends Serializable {
   void putTo(Bundle bundle, Param param);
 }
 
-class Empty<P> implements ParameterProvider<P> {
+final class Empty<P> implements ParameterProvider<P> {
   @SuppressWarnings("unchecked")
   static <P> ParameterProvider<P> get() {
     return new Empty();
@@ -25,22 +25,27 @@ class Empty<P> implements ParameterProvider<P> {
   }
 }
 
-class ParcelableProvider<P extends Parcelable> implements ParameterProvider<P> {
+final class ParcelableProvider<P extends Parcelable> implements ParameterProvider<P> {
+  private static final String KEY = "parcelable";
+
   @SuppressWarnings("unchecked")
   static <P> ParameterProvider<P> get() {
     return new ParcelableProvider();
   }
 
   @Override public P get(Bundle args) {
-    return args.getParcelable("parcelable");
+    return args.getParcelable(KEY);
   }
 
   @Override public void putTo(Bundle bundle, P parcelable) {
-    bundle.putParcelable("parcelable", parcelable);
+    bundle.putParcelable(KEY, parcelable);
   }
 }
 
-class SerializableProvider<P extends Serializable> implements ParameterProvider<P> {
+final class SerializableProvider<P extends Serializable> implements ParameterProvider<P> {
+
+  private static final String KEY = "serializable";
+
   @SuppressWarnings("unchecked")
   static <P extends Serializable> SerializableProvider<P> get() {
     return new SerializableProvider();
@@ -48,10 +53,10 @@ class SerializableProvider<P extends Serializable> implements ParameterProvider<
 
   @SuppressWarnings("unchecked")
   @Override public P get(Bundle args) {
-    return (P) args.getSerializable("serializable");
+    return (P) args.getSerializable(KEY);
   }
 
   @Override public void putTo(Bundle bundle, P serializable) {
-    bundle.putSerializable("serializable", serializable);
+    bundle.putSerializable(KEY, serializable);
   }
 }

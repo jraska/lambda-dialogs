@@ -17,11 +17,13 @@ final class SerializableValidator {
 
     outputStream.writeObject(serializable);
 
-    ObjectInputStream inputStream = new ObjectInputStream(new ByteArrayInputStream(byteArrayOutputStream.toByteArray()));
+    ByteArrayInputStream byteStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
+    ObjectInputStream inputStream = new ObjectInputStream(byteStream);
     Object deserialized = inputStream.readObject();
 
     if (deserialized == null) {
-      throw new IllegalArgumentException(serializable.getClass() + " does not implement Serializable properly");
+      throw new IllegalArgumentException(serializable.getClass()
+          + " is not Serializable");
     }
   }
 }

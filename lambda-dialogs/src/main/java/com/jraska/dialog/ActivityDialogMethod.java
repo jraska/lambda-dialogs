@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentActivity;
 
 import java.io.Serializable;
 
-public interface DialogDelegateParametrized<A extends FragmentActivity, Param>
+public interface ActivityDialogMethod<A extends FragmentActivity>
     extends Serializable {
-  Dialog onCreateDialog(A activity, Param parameter);
+  Dialog onCreateDialog(A activity);
 }

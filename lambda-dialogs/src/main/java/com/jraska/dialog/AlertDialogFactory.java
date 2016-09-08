@@ -4,9 +4,11 @@ import android.content.DialogInterface;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
 
-public final class AlertDialogFactory implements DialogFactory {
+public final class AlertDialogFactory<A extends FragmentActivity>
+    implements ActivityDialogMethodParam<A, DialogFields> {
+
   @Override
-  public final AlertDialog onCreateDialog(FragmentActivity activity, DialogFields fields) {
+  public final AlertDialog onCreateDialog(A activity, DialogFields fields) {
     return new AlertDialog.Builder(activity)
         .setTitle(fields.title)
         .setMessage(fields.message)

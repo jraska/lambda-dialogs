@@ -13,11 +13,11 @@ import java.io.Serializable;
 public final class DelegateDialog extends DialogFragment {
   static final String TAG = DelegateDialog.class.getSimpleName();
 
-  private static final String DELEGATE = "delegate";
+  private static final String DELEGATE = "method";
   private static final String PARAMETER_PROVIDER = "parameterProvider";
 
-  private DialogDelegateParametrized delegate() {
-    return (DialogDelegateParametrized) getArguments().getSerializable(DELEGATE);
+private ActivityDialogMethodParam delegate() {
+    return (ActivityDialogMethodParam) getArguments().getSerializable(DELEGATE);
   }
 
   private ParameterProvider parameterProvider() {
@@ -35,72 +35,64 @@ public final class DelegateDialog extends DialogFragment {
     show(fragmentManager, TAG);
   }
 
-  public static class BuilderNoDelegate<A extends FragmentActivity> {
-    private final FragmentActivity fragmentActivity;
+  public static class BuilderNoMethod<A extends FragmentActivity> {
+    private final FragmentActivity activity;
 
-    BuilderNoDelegate(FragmentActivity fragmentActivity) {
-      this.fragmentActivity = fragmentActivity;
+    BuilderNoMethod(FragmentActivity activity) {
+      this.activity = activity;
     }
 
-    public Builder method(DialogDelegate<A> method) {
-      if (method == null) {
-        throw new IllegalArgumentException("method cannot be null");
-      }
+    public Builder method(ActivityDialogMethod<A> method) {
+      Preconditions.argumentNotNull(method, "method");
 
-      return new Builder<>(fragmentActivity, wrapDelegate(method), Empty.get(), null);
+      return new Builder<>(activity, wrapMethod(method), Empty.get(), null);
     }
 
-    public <P extends Parcelable> BuilderWithParameterDelegate<A, P> parameter(P value) {
-      if (value == null) {
-        throw new IllegalArgumentException("method cannot be null");
-      }
+    public <P extends Parcelable> BuilderWithParameter<A, P> parameter(P value) {
+      Preconditions.argumentNotNull(value, "value");
 
-      return new BuilderWithParameterDelegate<>(fragmentActivity, ParcelableProvider.get(), value);
+      return new BuilderWithParameter<>(activity, ParcelableProvider.get(), value);
     }
 
-    public <P extends Serializable> BuilderWithParameterDelegate<A, P> parameter(P value) {
-      if (value == null) {
-        throw new IllegalArgumentException("method cannot be null");
-      }
+    public <P extends Serializable> BuilderWithParameter<A, P> parameter(P value) {
+      Preconditions.argumentNotNull(value, "value");
 
-      return new BuilderWithParameterDelegate<>(fragmentActivity, SerializableProvider.get(), value);
+      return new BuilderWithParameter<>(activity, SerializableProvider.get(), value);
     }
   }
 
-  public static class BuilderWithParameterDelegate<A extends FragmentActivity, P> {
-    private final FragmentActivity fragmentActivity;
+  public static class BuilderWithParameter<A extends FragmentActivity, P> {
+    private final FragmentActivity activity;
     private final ParameterProvider<P> provider;
     private final P value;
 
-    BuilderWithParameterDelegate(FragmentActivity fragmentActivity,
-                                 ParameterProvider<P> provider, P value) {
-      this.fragmentActivity = fragmentActivity;
+    BuilderWithParameter(FragmentActivity activity,
+                         ParameterProvider<P> provider, P value) {
+      this.activity = activity;
       this.provider = provider;
       this.value = value;
     }
 
-    public Builder method(DialogDelegateParametrized<A, P> delegate) {
-      if (delegate == null) {
-        throw new IllegalArgumentException("delegate cannot be null");
-      }
+    public Builder method(ActivityDialogMethodParam<A, P> method) {
+      Preconditions.argumentNotNull(method, "method");
 
-      return new Builder<>(fragmentActivity, delegate, provider, value);
+      return new Builder<>(activity, method, provider, value);
     }
   }
 
   public static class Builder<P> {
-    private final FragmentActivity fragmentActivity;
-    private final DialogDelegateParametrized delegate;
+    private final FragmentActivity activity;
+    private final ActivityDialogMethodParam method;
     private final ParameterProvider<P> parameterProvider;
     private final P parameter;
 
     private final SerializableValidator validator = new SerializableValidator();
     private boolean validateEagerly;
 
-    Builder(FragmentActivity fragmentActivity, DialogDelegateParametrized delegate,
+    Builder(FragmentActivity activity, ActivityDialogMethodParam method,
             ParameterProvider<P> parameterProvider, P parameter) {
-      this.fragmentActivity = fragmentActivity;
-      this.delegate = delegate;
+      this.activity = activity;
+      this.method = method;
       this.parameterProvider = parameterProvider;
       this.parameter = parameter;
     }
@@ -116,7 +108,7 @@ public final class DelegateDialog extends DialogFragment {
       }
 
       Bundle arguments = new Bundle();
-      arguments.putSerializable(DELEGATE, delegate);
+      arguments.putSerializable(DELEGATE, method);
       arguments.putSerializable(PARAMETER_PROVIDER, parameterProvider);
       parameterProvider.putTo(arguments, parameter);
 
@@ -126,12 +118,12 @@ public final class DelegateDialog extends DialogFragment {
     }
 
     private void validate() {
-      validator.validateSerializable(delegate);
+      validator.validateSerializable(method);
       validator.validateSerializable(parameterProvider);
     }
 
     private FragmentManager fragmentManager() {
-      return fragmentActivity.getSupportFragmentManager();
+      return activity.getSupportFragmentManager();
     }
 
     public void show() {
@@ -143,9 +135,9 @@ public final class DelegateDialog extends DialogFragment {
     }
   }
 
-  static <A extends FragmentActivity, P> DialogDelegateParametrized<A, P> wrapDelegate(
-      DialogDelegate<A> delegate) {
+  static <A extends FragmentActivity, P> ActivityDialogMethodParam<A, P> wrapMethod(
+      ActivityDialogMethod<A> method) {
     return (activity, parameter) ->
-        delegate.onCreateDialog((A) activity);
+        method.onCreateDialog((A) activity);
   }
 }
