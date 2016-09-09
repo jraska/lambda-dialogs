@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -13,6 +14,7 @@ import java.io.Serializable;
 public final class DelegateDialog extends DialogFragment {
   static final String TAG = DelegateDialog.class.getSimpleName();
 
+  private static final String BUILDER_VALIDATION = "createdByBuilder";
   private static final String DELEGATE = "method";
   private static final String PARAMETER_PROVIDER = "parameterProvider";
 
@@ -22,6 +24,17 @@ public final class DelegateDialog extends DialogFragment {
 
   private ParameterProvider parameterProvider() {
     return (ParameterProvider) getArguments().getSerializable(PARAMETER_PROVIDER);
+  }
+
+  @Override
+  public void onCreate(@Nullable Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+
+    if (getArguments() == null || getArguments().get(BUILDER_VALIDATION) == null) {
+      throw new IllegalStateException("You are creating the fragment with new DelegateFragment " +
+          "or you modify the arguments you naughty developer. " +
+          "Please use LambdaDialogs.delegate() or LambdaDialogs.builder() methods.");
+    }
   }
 
   @NonNull
@@ -124,6 +137,7 @@ public final class DelegateDialog extends DialogFragment {
       }
 
       Bundle arguments = new Bundle();
+      arguments.putString(BUILDER_VALIDATION, ""); //just put anything to be not null
       arguments.putSerializable(DELEGATE, method);
       arguments.putSerializable(PARAMETER_PROVIDER, parameterProvider);
       parameterProvider.putTo(arguments, parameter);
