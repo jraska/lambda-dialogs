@@ -113,7 +113,7 @@ public final class DelegateDialog extends DialogFragment {
       this.parameter = parameter;
     }
 
-    public Builder validateEagerly(boolean validateEagerly) {
+    public Builder<P> validateEagerly(boolean validateEagerly) {
       this.validateEagerly = validateEagerly;
       return this;
     }

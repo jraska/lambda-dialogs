@@ -2,7 +2,7 @@ package com.jraska.dialog;
 
 import android.os.Bundle;
 
-final class DialogFieldsBundleAdapter {
+final class DialogFieldsBundleAdapter implements ParameterProvider<DialogFields> {
   private static final String TITLE = "title";
   private static final String MESSAGE = "message";
   private static final String ICON_RES = "icon";
@@ -14,9 +14,8 @@ final class DialogFieldsBundleAdapter {
   private static final String NEGATIVE_TEXT = "negativeText";
   private static final String CANCELABLE = "cancelable";
 
-  static final DialogFieldsBundleAdapter INSTANCE = new DialogFieldsBundleAdapter();
-
-  void intoBundle(DialogFields fields, Bundle bundle) {
+  @Override
+  public void putTo(Bundle bundle, DialogFields fields) {
     bundle.putCharSequence(TITLE, fields.title);
     bundle.putCharSequence(MESSAGE, fields.message);
     bundle.putInt(ICON_RES, fields.iconRes);
@@ -29,7 +28,8 @@ final class DialogFieldsBundleAdapter {
     bundle.putBoolean(CANCELABLE, fields.cancelable);
   }
 
-  DialogFields fromBundle(Bundle bundle) {
+  @Override
+  public DialogFields get(Bundle bundle) {
     return DialogFields.builder()
         .title(bundle.getCharSequence(TITLE))
         .message(bundle.getCharSequence(MESSAGE))

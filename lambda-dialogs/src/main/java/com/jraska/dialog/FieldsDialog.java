@@ -1,43 +1,14 @@
 package com.jraska.dialog;
 
-import android.app.Dialog;
-import android.os.Bundle;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 
-public final class FieldsDialog extends DialogFragment {
-  public static final String TAG = FieldsDialog.class.getSimpleName();
-
-  private static final String DIALOG_FACTORY = "factory";
-
-  private final DialogFieldsBundleAdapter fieldsAdapter = DialogFieldsBundleAdapter.INSTANCE;
-
-  private DialogFields fields() {
-    return fieldsAdapter.fromBundle(getArguments());
-  }
-
-  @SuppressWarnings("unchecked")
-  private <T> ActivityDialogMethodParam<FragmentActivity, T> factory() {
-    return (ActivityDialogMethodParam) getArguments().getSerializable(DIALOG_FACTORY);
-  }
-
-  @NonNull
-  @Override
-  public Dialog onCreateDialog(Bundle savedInstanceState) {
-    return factory().onCreateDialog(getActivity(), fields());
-  }
-
-  public void show(FragmentManager fragmentManager) {
-    show(fragmentManager, TAG);
-  }
-
+public final class FieldsDialog {
   public static class Builder<A extends FragmentActivity> {
     private final FragmentActivity fragmentActivity;
-    private final DialogFieldsBundleAdapter fieldsBundleAdapter;
     private final DialogFields.Builder fieldsBuilder;
 
     private boolean validateEagerly;
@@ -46,7 +17,6 @@ public final class FieldsDialog extends DialogFragment {
 
     Builder(A fragmentActivity) {
       this.fragmentActivity = fragmentActivity;
-      fieldsBundleAdapter = DialogFieldsBundleAdapter.INSTANCE;
       fieldsBuilder = DialogFields.builder();
     }
 
@@ -140,7 +110,7 @@ public final class FieldsDialog extends DialogFragment {
       return this;
     }
 
-    public FieldsDialog build() {
+    public DelegateDialog.Builder<DialogFields> build() {
       DialogFields dialogFields = fieldsBuilder.build();
 
       if (validateEagerly) {
@@ -150,23 +120,19 @@ public final class FieldsDialog extends DialogFragment {
         validator.validateSerializable(dialogFields.negativeAction);
       }
 
-      Bundle arguments = new Bundle();
-      arguments.putSerializable(DIALOG_FACTORY, dialogFactory);
-      fieldsBundleAdapter.intoBundle(dialogFields, arguments);
-
-      FieldsDialog fragment = new FieldsDialog();
-      fragment.setArguments(arguments);
-      return fragment;
+      return new DelegateDialog.Builder<>(fragmentActivity, dialogFactory,
+          new DialogFieldsBundleAdapter(), dialogFields)
+          .validateEagerly(validateEagerly);
     }
 
     public void show() {
-      build().show(fragmentManager());
+      build().show();
     }
 
     public void show(String tag) {
       Preconditions.argumentNotNull(tag, "tag");
 
-      build().show(fragmentManager(), tag);
+      build().show(tag);
     }
   }
 

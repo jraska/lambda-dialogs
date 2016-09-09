@@ -22,8 +22,8 @@ public class DialogFieldsBundleAdapterTest {
     DialogFields randomFields = createRandomFields();
     Bundle bundle = new Bundle();
 
-    bundleAdapter.intoBundle(randomFields, bundle);
-    DialogFields fieldsFromBundle = bundleAdapter.fromBundle(bundle);
+    bundleAdapter.putTo(bundle, randomFields);
+    DialogFields fieldsFromBundle = bundleAdapter.get(bundle);
 
     assertThat(fieldsFromBundle).isEqualTo(fieldsFromBundle);
   }
