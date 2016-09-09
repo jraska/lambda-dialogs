@@ -8,6 +8,17 @@ Use lambda expressions to effectively delegate dialog creation to activity to ac
 [![License](https://img.shields.io/badge/license-Apache%202.0-green.svg) ](https://github.com/jraska/lambda-dialogs/blob/master/LICENSE)
 [![Download](https://api.bintray.com/packages/jraska/maven/com.jraska%3Alambda-dialogs/images/download.svg) ](https://bintray.com/jraska/maven/com.jraska%3Alambda-dialogs/_latestVersion)
 
+## Why lambda dialogs?
+
+Driving dialog logic is a pain. If you show dialog, you typically want to react on events like button clicks, 
+but where to register listener for it? If you show the dialog in Activity, the dialog disappear on rotation and
+if you implement dialog fragment you need to put logic with dependencies into dialog or introduce 
+some callback mechanism back to Activity.
+
+Lambda Dialogs use power of method references to delegate dialog functionality back to Activities. All the logic 
+remains in Activity and dialog events are only delegated to current instance 
+of Activity through method references.
+
 ## Usage
 
 ```java
@@ -49,16 +60,7 @@ Grab via Gradle:
 compile 'com.jraska:lambda-dialogs:0.2.0'
 ```
 
-## Why lambda dialogs?
-
-Driving dialog logic is a pain. If you show dialog, you typically want to react on events like button clicks, 
-but where to register listener for it? If you show the dialog in Activity, the dialog disappear on rotation and
-if you implement dialog fragment you need to put logic with dependencies into dialog or introduce 
-some callback mechanism back to Activity.
-
-Lambda Dialogs use power of method references to delegate dialog functionality back to Activities. All the logic 
-remains in Activity and dialog events are only delegated to current instance 
-of Activity through method references.
+You will need to setup [Retrolambda][Retrolambda] for to get real advantage of Lambda Dialogs with method references. 
 
 ## License
 
@@ -75,3 +77,6 @@ of Activity through method references.
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
+    
+    
+  [Retrolambda]: https://github.com/evant/gradle-retrolambda
