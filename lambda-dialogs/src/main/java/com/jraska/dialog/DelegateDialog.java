@@ -16,7 +16,7 @@ public final class DelegateDialog extends DialogFragment {
   private static final String DELEGATE = "method";
   private static final String PARAMETER_PROVIDER = "parameterProvider";
 
-private ActivityDialogMethodParam delegate() {
+  private ActivityDialogMethodParam delegate() {
     return (ActivityDialogMethodParam) getArguments().getSerializable(DELEGATE);
   }
 
@@ -37,27 +37,36 @@ private ActivityDialogMethodParam delegate() {
 
   public static class BuilderNoMethod<A extends FragmentActivity> {
     private final FragmentActivity activity;
+    private boolean validateEagerly;
 
     BuilderNoMethod(FragmentActivity activity) {
       this.activity = activity;
     }
 
+    public BuilderNoMethod<A> validateEagerly(boolean validateEagerly) {
+      this.validateEagerly = validateEagerly;
+      return this;
+    }
+
     public Builder method(ActivityDialogMethod<A> method) {
       Preconditions.argumentNotNull(method, "method");
 
-      return new Builder<>(activity, wrapMethod(method), Empty.get(), null);
+      return new Builder<>(activity, wrapMethod(method), Empty.get(), null)
+          .validateEagerly(validateEagerly);
     }
 
     public <P extends Parcelable> BuilderWithParameter<A, P> parameter(P value) {
       Preconditions.argumentNotNull(value, "value");
 
-      return new BuilderWithParameter<>(activity, ParcelableProvider.get(), value);
+      return new BuilderWithParameter<A, P>(activity, ParcelableProvider.get(), value)
+          .validateEagerly(validateEagerly);
     }
 
     public <P extends Serializable> BuilderWithParameter<A, P> parameter(P value) {
       Preconditions.argumentNotNull(value, "value");
 
-      return new BuilderWithParameter<>(activity, SerializableProvider.get(), value);
+      return new BuilderWithParameter<A, P>(activity, SerializableProvider.get(), value)
+          .validateEagerly(validateEagerly);
     }
   }
 
@@ -65,6 +74,7 @@ private ActivityDialogMethodParam delegate() {
     private final FragmentActivity activity;
     private final ParameterProvider<P> provider;
     private final P value;
+    private boolean validateEagerly;
 
     BuilderWithParameter(FragmentActivity activity,
                          ParameterProvider<P> provider, P value) {
@@ -73,10 +83,16 @@ private ActivityDialogMethodParam delegate() {
       this.value = value;
     }
 
+    public BuilderWithParameter<A, P> validateEagerly(boolean validateEagerly) {
+      this.validateEagerly = validateEagerly;
+      return this;
+    }
+
     public Builder method(ActivityDialogMethodParam<A, P> method) {
       Preconditions.argumentNotNull(method, "method");
 
-      return new Builder<>(activity, method, provider, value);
+      return new Builder<>(activity, method, provider, value)
+          .validateEagerly(validateEagerly);
     }
   }
 

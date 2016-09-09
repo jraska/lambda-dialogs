@@ -17,6 +17,10 @@ android {
     sourceCompatibility rootProject.ext.sourceCompatibility
     targetCompatibility rootProject.ext.sourceCompatibility
   }
+
+  testOptions {
+    unitTests.returnDefaultValues = true
+  }
 }
 
 apply plugin: 'me.tatarka.retrolambda'
@@ -27,6 +31,7 @@ dependencies {
   provided 'org.projectlombok:lombok:1.16.10'
 
   testCompile 'junit:junit:4.12'
+  testCompile 'org.mockito:mockito-all:1.10.19'
   testCompile 'org.robolectric:robolectric:3.1.2'
   testCompile 'io.github.benas:random-beans:3.2.0'
   testCompile 'com.squareup.assertj:assertj-android:1.1.1'

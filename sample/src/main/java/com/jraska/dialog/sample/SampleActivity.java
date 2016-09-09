@@ -21,11 +21,12 @@ public class SampleActivity extends AppCompatActivity {
     setContentView(R.layout.activity_sample);
     ButterKnife.bind(this);
     setSupportActionBar(toolbar);
+
+    LambdaDialogs.validateEagerly(BuildConfig.DEBUG);
   }
 
   @OnClick(R.id.fab) void onFabClick() {
     LambdaDialogs.builder(this)
-        .validateEagerly(BuildConfig.DEBUG)
         .icon(android.R.drawable.ic_dialog_alert)
         .message("Test message")
         .title(R.string.app_name)
