@@ -37,7 +37,6 @@ public final class DelegateDialog extends DialogFragment {
   @Override @SuppressWarnings("unchecked")
   public Dialog onCreateDialog(Bundle savedInstanceState) {
     Object parameter = parameterProvider().get(getArguments());
-    setCancelable(false);
     return delegate().onCreateDialog(getActivity(), parameter);
   }
 
