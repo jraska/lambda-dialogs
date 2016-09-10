@@ -57,7 +57,7 @@ of Activity through method references.
 
 Grab via Gradle:
 ```groovy
-compile 'com.jraska:lambda-dialogs:0.2.0'
+compile 'com.jraska:lambda-dialogs:0.3.0'
 ```
 
 You will need to setup [Retrolambda][Retrolambda] for to get real advantage of Lambda Dialogs with method references. 
