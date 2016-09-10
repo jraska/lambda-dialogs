@@ -87,13 +87,12 @@ public class SampleActivity extends AppCompatActivity {
   void showDelegateDialogWithParameter() {
     LambdaDialogs.delegate(this)
         .parameter("Parameter title")
+        .cancelable(false)
         .method(SampleActivity::createDialog)
-        .validateEagerly(BuildConfig.DEBUG)
         .show();
   }
 
   Dialog createDialog(String title) {
-    // TODO(#5): 12/08/16 add material dialogs example
     return new AlertDialog.Builder(this)
         .setTitle(title)
         .show();

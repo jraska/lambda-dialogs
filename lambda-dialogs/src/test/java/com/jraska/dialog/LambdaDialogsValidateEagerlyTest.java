@@ -128,7 +128,4 @@ public class LambdaDialogsValidateEagerlyTest {
       throw new UnsupportedOperationException("Not implemented!");
     }
   }
-
-  interface DialogStringParameter extends ActivityDialogMethodParam<FragmentActivity, String> {
-  }
 }

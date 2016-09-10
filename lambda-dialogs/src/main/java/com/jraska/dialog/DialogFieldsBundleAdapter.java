@@ -6,7 +6,7 @@ final class DialogFieldsBundleAdapter implements ParameterProvider<DialogFields>
   private static final String TITLE = "title";
   private static final String MESSAGE = "message";
   private static final String ICON_RES = "icon";
-  private static final String POSITIVE_ACTION = "positiveMethd";
+  private static final String POSITIVE_ACTION = "positiveMethod";
   private static final String POSITIVE_TEXT = "positiveText";
   private static final String NEUTRAL_ACTION = "neutralMethod";
   private static final String NEUTRAL_TEXT = "neutralText";

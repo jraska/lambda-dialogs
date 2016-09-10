@@ -1,6 +1,7 @@
 package com.jraska.dialog;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
@@ -17,6 +18,8 @@ public final class DelegateDialog extends DialogFragment {
   private static final String BUILDER_VALIDATION = "createdByBuilder";
   private static final String DELEGATE = "method";
   private static final String PARAMETER_PROVIDER = "parameterProvider";
+  private static final String DISMISS_ACTION = "dismissAction";
+  private static final String CANCEL_ACTION = "cancelAction";
 
   private ActivityDialogMethodParam delegate() {
     return (ActivityDialogMethodParam) getArguments().getSerializable(DELEGATE);
@@ -30,7 +33,11 @@ public final class DelegateDialog extends DialogFragment {
   public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    validateDialogInstance(this);
+    if (getArguments() == null || getArguments().get(BUILDER_VALIDATION) == null) {
+      throw new IllegalStateException("You are creating " + DelegateDialog.class.getSimpleName()
+          + " with empty constructor or you modify the arguments you naughty developer. " +
+          "Please use LambdaDialogs.delegate() or LambdaDialogs.builder() methods.");
+    }
   }
 
   @NonNull
@@ -40,91 +47,140 @@ public final class DelegateDialog extends DialogFragment {
     return delegate().onCreateDialog(getActivity(), parameter);
   }
 
+  @Override
+  public void onCancel(DialogInterface dialog) {
+    super.onCancel(dialog);
+    callAction(CANCEL_ACTION);
+  }
+
+  @Override
+  public void onDismiss(DialogInterface dialog) {
+    super.onDismiss(dialog);
+    callAction(DISMISS_ACTION);
+  }
+
+  @SuppressWarnings("unchecked")
+  private void callAction(String key) {
+    ActivityMethod action = (ActivityMethod) getArguments().getSerializable(key);
+    FragmentActivity activity = getActivity();
+    if (action != null && activity != null) {
+      action.call(activity);
+    }
+  }
+
   public void show(FragmentManager fragmentManager) {
     show(fragmentManager, TAG);
   }
 
-  public static class BuilderNoMethod<A extends FragmentActivity> {
-    private final FragmentActivity activity;
-    private boolean validateEagerly;
+  static abstract class BaseBuilder<A extends FragmentActivity, T extends BaseBuilder> {
+    protected final FragmentActivity activity;
+    protected boolean validateEagerly;
+    protected boolean cancelable = true;
+    protected ActivityMethod cancelAction;
+    protected ActivityMethod dismissAction;
 
-    BuilderNoMethod(FragmentActivity activity) {
+    BaseBuilder(FragmentActivity activity) {
       this.activity = activity;
     }
 
-    public BuilderNoMethod<A> validateEagerly(boolean validateEagerly) {
-      this.validateEagerly = validateEagerly;
-      return this;
+    BaseBuilder(BaseBuilder previous) {
+      this(previous.activity);
+      validateEagerly = previous.validateEagerly;
+      cancelable = previous.cancelable;
+      cancelAction = previous.cancelAction;
+      dismissAction = previous.dismissAction;
     }
 
-    public Builder method(ActivityDialogMethod<A> method) {
+    protected final FragmentManager fragmentManager() {
+      return activity.getSupportFragmentManager();
+    }
+
+    @SuppressWarnings("unchecked")
+    public final T validateEagerly(boolean validateEagerly) {
+      this.validateEagerly = validateEagerly;
+      return (T) this;
+    }
+
+    @SuppressWarnings("unchecked")
+    public final T cancelMethod(ActivityMethod<A> method) {
+      this.cancelAction = method;
+      return (T) this;
+    }
+
+    @SuppressWarnings("unchecked")
+    public final T dismissMethod(ActivityMethod<A> method) {
+      this.dismissAction = method;
+      return (T) this;
+    }
+
+    @SuppressWarnings("unchecked")
+    public final T cancelable(boolean cancelable) {
+      this.cancelable = cancelable;
+      return (T) this;
+    }
+  }
+
+  public final static class BuilderNoMethod<A extends FragmentActivity>
+      extends BaseBuilder<A, BuilderNoMethod<A>> {
+    BuilderNoMethod(FragmentActivity activity) {
+      super(activity);
+    }
+
+    public Builder<?> method(ActivityDialogMethod<A> method) {
       Preconditions.argumentNotNull(method, "method");
 
-      return new Builder<>(activity, wrapMethod(method), Empty.get(), null)
+      return new Builder<>(this, wrapMethod(method), Empty.get(), null)
           .validateEagerly(validateEagerly);
     }
 
     public <P extends Parcelable> BuilderWithParameter<A, P> parameter(P value) {
       Preconditions.argumentNotNull(value, "value");
 
-      return new BuilderWithParameter<A, P>(activity, ParcelableProvider.get(), value)
-          .validateEagerly(validateEagerly);
+      return new BuilderWithParameter<>(this, ParcelableProvider.get(), value);
     }
 
     public <P extends Serializable> BuilderWithParameter<A, P> parameter(P value) {
       Preconditions.argumentNotNull(value, "value");
 
-      return new BuilderWithParameter<A, P>(activity, SerializableProvider.get(), value)
-          .validateEagerly(validateEagerly);
+      return new BuilderWithParameter<>(this, SerializableProvider.get(), value);
     }
   }
 
-  public static class BuilderWithParameter<A extends FragmentActivity, P> {
-    private final FragmentActivity activity;
+  public static class BuilderWithParameter<A extends FragmentActivity, P>
+      extends BaseBuilder<A, BuilderWithParameter<A, P>> {
+
     private final ParameterProvider<P> provider;
     private final P value;
-    private boolean validateEagerly;
 
-    BuilderWithParameter(FragmentActivity activity,
+    BuilderWithParameter(BaseBuilder builder,
                          ParameterProvider<P> provider, P value) {
-      this.activity = activity;
+      super(builder);
       this.provider = provider;
       this.value = value;
     }
 
-    public BuilderWithParameter<A, P> validateEagerly(boolean validateEagerly) {
-      this.validateEagerly = validateEagerly;
-      return this;
-    }
-
-    public Builder method(ActivityDialogMethodParam<A, P> method) {
+    public Builder<P> method(ActivityDialogMethodParam<A, P> method) {
       Preconditions.argumentNotNull(method, "method");
 
-      return new Builder<>(activity, method, provider, value)
+      return new Builder<>(this, method, provider, value)
           .validateEagerly(validateEagerly);
     }
+
   }
 
-  public static class Builder<P> {
-    private final FragmentActivity activity;
+  public static class Builder<P> extends BaseBuilder<FragmentActivity, Builder<P>> {
     private final ActivityDialogMethodParam method;
     private final ParameterProvider<P> parameterProvider;
     private final P parameter;
 
     private final SerializableValidator validator = new SerializableValidator();
-    private boolean validateEagerly;
 
-    Builder(FragmentActivity activity, ActivityDialogMethodParam method,
+    Builder(BaseBuilder builder, ActivityDialogMethodParam method,
             ParameterProvider<P> parameterProvider, P parameter) {
-      this.activity = activity;
+      super(builder);
       this.method = method;
       this.parameterProvider = parameterProvider;
       this.parameter = parameter;
-    }
-
-    public Builder<P> validateEagerly(boolean validateEagerly) {
-      this.validateEagerly = validateEagerly;
-      return this;
     }
 
     public DelegateDialog build() {
@@ -135,21 +191,20 @@ public final class DelegateDialog extends DialogFragment {
       Bundle arguments = new Bundle();
       arguments.putSerializable(DELEGATE, method);
       arguments.putSerializable(PARAMETER_PROVIDER, parameterProvider);
+      arguments.putSerializable(CANCEL_ACTION, cancelAction);
+      arguments.putSerializable(DISMISS_ACTION, dismissAction);
+      arguments.putString(BUILDER_VALIDATION, ""); //just put anything to be not null
       parameterProvider.putTo(arguments, parameter);
 
       DelegateDialog dialog = new DelegateDialog();
       dialog.setArguments(arguments);
-      makeValidDialog(dialog);
+      dialog.setCancelable(cancelable);
       return dialog;
     }
 
     private void validate() {
       validator.validateSerializable(method);
       validator.validateSerializable(parameterProvider);
-    }
-
-    private FragmentManager fragmentManager() {
-      return activity.getSupportFragmentManager();
     }
 
     public void show() {
@@ -165,21 +220,5 @@ public final class DelegateDialog extends DialogFragment {
       ActivityDialogMethod<A> method) {
     return (activity, parameter) ->
         method.onCreateDialog((A) activity);
-  }
-
-  static void validateDialogInstance(DialogFragment dialog) {
-    if (dialog.getArguments() == null || dialog.getArguments().get(BUILDER_VALIDATION) == null) {
-      throw new IllegalStateException("You are creating " + dialog.getClass().getSimpleName()
-          + " with empty constructor or you modify the arguments you naughty developer. " +
-          "Please use LambdaDialogs.delegate() or LambdaDialogs.builder() methods.");
-    }
-  }
-
-  static void makeValidDialog(DialogFragment fragment) {
-    if (fragment.getArguments() == null) {
-      return;
-    }
-
-    fragment.getArguments().putString(BUILDER_VALIDATION, ""); //just put anything to be not null
   }
 }
