@@ -50,6 +50,8 @@ dependencies {
   compile 'com.jakewharton:butterknife:8.4.0'
   apt 'com.jakewharton:butterknife-compiler:8.4.0'
 
+  compile 'com.afollestad.material-dialogs:core:0.9.0.1'
+
   testCompile 'com.android.support:support-annotations:24.2.0'
   testCompile 'junit:junit:4.12'
   testCompile 'org.mockito:mockito-all:1.10.19'
