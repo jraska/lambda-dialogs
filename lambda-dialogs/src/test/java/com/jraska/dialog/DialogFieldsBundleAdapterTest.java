@@ -6,6 +6,7 @@ import io.github.benas.randombeans.EnhancedRandomBuilder;
 import io.github.benas.randombeans.api.EnhancedRandom;
 import io.github.benas.randombeans.api.Randomizer;
 import io.github.benas.randombeans.randomizers.text.StringRandomizer;
+import lombok.EqualsAndHashCode;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -19,13 +20,13 @@ public class DialogFieldsBundleAdapterTest {
   @Test
   public void putsIntoBundleCorrectly() {
     DialogFieldsBundleAdapter bundleAdapter = new DialogFieldsBundleAdapter();
-    DialogFields randomFields = createRandomFields();
+    DialogFields originalFields = createRandomFields();
     Bundle bundle = new Bundle();
 
-    bundleAdapter.putTo(bundle, randomFields);
+    bundleAdapter.putTo(bundle, originalFields);
     DialogFields fieldsFromBundle = bundleAdapter.get(bundle);
 
-    assertThat(fieldsFromBundle).isEqualTo(fieldsFromBundle);
+    assertThat(fieldsFromBundle).isEqualTo(originalFields);
   }
 
   static DialogFields createRandomFields() {
@@ -36,6 +37,7 @@ public class DialogFieldsBundleAdapterTest {
     return random.nextObject(DialogFields.class);
   }
 
+  @EqualsAndHashCode
   static class TestMethod implements ActivityMethod {
     @Override public void call(FragmentActivity activity) {
       throw new UnsupportedOperationException();

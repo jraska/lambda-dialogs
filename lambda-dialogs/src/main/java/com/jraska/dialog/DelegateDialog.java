@@ -30,17 +30,14 @@ public final class DelegateDialog extends DialogFragment {
   public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    if (getArguments() == null || getArguments().get(BUILDER_VALIDATION) == null) {
-      throw new IllegalStateException("You are creating the fragment with new DelegateFragment " +
-          "or you modify the arguments you naughty developer. " +
-          "Please use LambdaDialogs.delegate() or LambdaDialogs.builder() methods.");
-    }
+    validateDialogInstance(this);
   }
 
   @NonNull
   @Override @SuppressWarnings("unchecked")
   public Dialog onCreateDialog(Bundle savedInstanceState) {
     Object parameter = parameterProvider().get(getArguments());
+    setCancelable(false);
     return delegate().onCreateDialog(getActivity(), parameter);
   }
 
@@ -137,14 +134,14 @@ public final class DelegateDialog extends DialogFragment {
       }
 
       Bundle arguments = new Bundle();
-      arguments.putString(BUILDER_VALIDATION, ""); //just put anything to be not null
       arguments.putSerializable(DELEGATE, method);
       arguments.putSerializable(PARAMETER_PROVIDER, parameterProvider);
       parameterProvider.putTo(arguments, parameter);
 
-      DelegateDialog fragment = new DelegateDialog();
-      fragment.setArguments(arguments);
-      return fragment;
+      DelegateDialog dialog = new DelegateDialog();
+      dialog.setArguments(arguments);
+      makeValidDialog(dialog);
+      return dialog;
     }
 
     private void validate() {
@@ -169,5 +166,21 @@ public final class DelegateDialog extends DialogFragment {
       ActivityDialogMethod<A> method) {
     return (activity, parameter) ->
         method.onCreateDialog((A) activity);
+  }
+
+  static void validateDialogInstance(DialogFragment dialog) {
+    if (dialog.getArguments() == null || dialog.getArguments().get(BUILDER_VALIDATION) == null) {
+      throw new IllegalStateException("You are creating " + dialog.getClass().getSimpleName()
+          + " with empty constructor or you modify the arguments you naughty developer. " +
+          "Please use LambdaDialogs.delegate() or LambdaDialogs.builder() methods.");
+    }
+  }
+
+  static void makeValidDialog(DialogFragment fragment) {
+    if (fragment.getArguments() == null) {
+      return;
+    }
+
+    fragment.getArguments().putString(BUILDER_VALIDATION, ""); //just put anything to be not null
   }
 }

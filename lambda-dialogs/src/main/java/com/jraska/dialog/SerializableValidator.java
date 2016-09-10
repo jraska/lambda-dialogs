@@ -6,10 +6,10 @@ import java.io.*;
 
 final class SerializableValidator {
 
-  @SneakyThrows
-  void validateSerializable(Serializable serializable) {
+  @SneakyThrows @SuppressWarnings("unchecked")
+  <T extends Serializable> T validateSerializable(T serializable) {
     if (serializable == null) {
-      return;
+      return null;
     }
 
     ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -19,11 +19,13 @@ final class SerializableValidator {
 
     ByteArrayInputStream byteStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
     ObjectInputStream inputStream = new ObjectInputStream(byteStream);
-    Object deserialized = inputStream.readObject();
+    T deserialized = (T) inputStream.readObject();
 
     if (deserialized == null) {
       throw new IllegalArgumentException(serializable.getClass()
           + " is not Serializable");
     }
+
+    return deserialized;
   }
 }

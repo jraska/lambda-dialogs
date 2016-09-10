@@ -2,9 +2,11 @@ package com.jraska.dialog;
 
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 @Builder(builderClassName = "Builder")
 @EqualsAndHashCode
+@ToString
 public final class DialogFields {
   public final CharSequence title;
   public final CharSequence message;
@@ -15,5 +17,4 @@ public final class DialogFields {
   public final CharSequence neutralText;
   public final ActivityMethod negativeAction;
   public final CharSequence negativeText;
-  public final boolean cancelable;
 }

@@ -52,7 +52,7 @@ public class LambdaDialogsValidateEagerlyTest {
   }
 
   @Test
-  public void givenStaticConfig_whenBuilderEagervalueOverwritten_thenPasses() {
+  public void givenStaticConfig_whenBuilderEagerValueOverwritten_thenPasses() {
     LambdaDialogs.validateEagerly(true);
 
     LambdaDialogs.builder(mock(FragmentActivity.class))
