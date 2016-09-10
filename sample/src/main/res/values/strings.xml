@@ -2,4 +2,5 @@
     <string name="app_name">sample</string>
   <string name="delegate_dialog">Delegate Dialog</string>
   <string name="delegate_dialog_with_parameter">Delegate with parameter</string>
+  <string name="material_dialog">Material dialog</string>
 </resources>

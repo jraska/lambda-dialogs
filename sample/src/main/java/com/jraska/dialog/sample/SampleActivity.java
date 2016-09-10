@@ -10,6 +10,7 @@ import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.jraska.dialog.FieldsDialog;
 import com.jraska.dialog.LambdaDialogs;
 
 import java.util.Random;
@@ -29,7 +30,12 @@ public class SampleActivity extends AppCompatActivity {
   }
 
   @OnClick(R.id.fab) void onFabClick() {
-    LambdaDialogs.builder(this)
+    setupBuilder()
+        .show();
+  }
+
+  private FieldsDialog.Builder<SampleActivity> setupBuilder() {
+    return LambdaDialogs.builder(this)
         .icon(android.R.drawable.ic_dialog_alert)
         .message("Test message")
         .title(R.string.app_name)
@@ -41,8 +47,7 @@ public class SampleActivity extends AppCompatActivity {
         .cancelable(new Random().nextBoolean())
         .neutralMethod(SampleActivity::onDialogNeutralClicked)
         .cancelMethod(SampleActivity::onDialogCancel)
-        .dismissMethod(SampleActivity::onDialogDismiss)
-        .show();
+        .dismissMethod(SampleActivity::onDialogDismiss);
   }
 
   void onDialogPositiveClicked() {
@@ -91,6 +96,13 @@ public class SampleActivity extends AppCompatActivity {
     // TODO(#5): 12/08/16 add material dialogs example
     return new AlertDialog.Builder(this)
         .setTitle(title)
+        .show();
+  }
+
+  @OnClick(R.id.material_dialog)
+  void showMaterialDialog() {
+    setupBuilder()
+        .dialogFactory(new MaterialDialogFactory<>())
         .show();
   }
 
