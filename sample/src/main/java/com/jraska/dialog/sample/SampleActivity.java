@@ -71,8 +71,9 @@ public final class SampleActivity extends AppCompatActivity {
   @OnClick(R.id.delegate_dialog)
   void showDelegateDialog() {
     LambdaDialogs.delegate(this)
-        .dismissMethod(SampleActivity::onDialogDismiss)
+        .dismissMethod(SampleActivity::onDialogDismiss) // method called for correct Activity instance
         .method(SampleActivity::createDialogInCorrectActivity) // method called for correct Activity instance
+        .cancelMethod(SampleActivity::onDialogCancel) // method called for correct Activity instance
         .show();
   }
 

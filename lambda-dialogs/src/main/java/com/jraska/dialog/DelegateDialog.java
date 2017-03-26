@@ -126,10 +126,10 @@ public final class DelegateDialog extends DialogFragment {
       super(activity);
     }
 
-    public Builder<?> method(ActivityDialogMethod<A> method) {
+    public Builder<A, ?> method(ActivityDialogMethod<A> method) {
       Preconditions.argumentNotNull(method, "method");
 
-      return new Builder<>(this, wrapMethod(method), Empty.get(), null)
+      return new Builder<A, Object>(this, wrapMethod(method), Empty.get(), null)
           .validateEagerly(validateEagerly);
     }
 
@@ -159,16 +159,16 @@ public final class DelegateDialog extends DialogFragment {
       this.value = value;
     }
 
-    public Builder<P> method(ActivityDialogMethodParam<A, P> method) {
+    public Builder<A, P> method(ActivityDialogMethodParam<A, P> method) {
       Preconditions.argumentNotNull(method, "method");
 
-      return new Builder<>(this, method, provider, value)
+      return new Builder<A, P>(this, method, provider, value)
           .validateEagerly(validateEagerly);
     }
 
   }
 
-  public static class Builder<P> extends BaseBuilder<FragmentActivity, Builder<P>> {
+  public static class Builder<A extends FragmentActivity, P> extends BaseBuilder<A, Builder<A, P>> {
     private final ActivityDialogMethodParam method;
     private final ParameterProvider<P> parameterProvider;
     private final P parameter;
