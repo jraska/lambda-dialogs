@@ -73,13 +73,18 @@ public class SampleActivity extends AppCompatActivity {
   @OnClick(R.id.delegate_dialog)
   void showDelegateDialog() {
     LambdaDialogs.delegate(this)
-        .method(SampleActivity::createDialog)
+        .dismissMethod(SampleActivity::onDialogDismiss)
+        .method(SampleActivity::createDialogInCorrectActivity) // method called for correct Activity instance
         .show();
   }
 
-  Dialog createDialog() {
+  Dialog createDialogInCorrectActivity() {
     return new AlertDialog.Builder(this)
         .setTitle("static title")
+        .setMessage("Dialog message")
+
+        // We can set listeners directly when we have delegate dialog
+        .setNegativeButton("Cancel", (dialog, which) -> onDialogNegativeClicked())
         .show();
   }
 
@@ -87,14 +92,20 @@ public class SampleActivity extends AppCompatActivity {
   void showDelegateDialogWithParameter() {
     LambdaDialogs.delegate(this)
         .parameter("Parameter title")
-        .cancelable(false)
-        .method(SampleActivity::createDialog)
+        .cancelable(true)
+        .cancelMethod(SampleActivity::onDialogCancel) // methdd referecne, method will be caled on proper Activity
+        .method(SampleActivity::createDialogWithStringParameter) // method called for correct Activity instance
         .show();
   }
 
-  Dialog createDialog(String title) {
+  Dialog createDialogWithStringParameter(String title) {
     return new AlertDialog.Builder(this)
         .setTitle(title)
+        .setMessage("Dialog message")
+        .setIcon(android.R.drawable.ic_dialog_info)
+
+        // We can set listeners directly when we have delegate dialog
+        .setPositiveButton("Ok", (dialog, which) -> onDialogPositiveClicked())
         .show();
   }
 
