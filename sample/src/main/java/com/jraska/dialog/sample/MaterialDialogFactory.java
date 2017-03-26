@@ -8,7 +8,7 @@ import com.jraska.dialog.ActivityDialogMethodParam;
 import com.jraska.dialog.ActivityMethod;
 import com.jraska.dialog.DialogFields;
 
-public class MaterialDialogFactory<A extends FragmentActivity>
+public final class MaterialDialogFactory<A extends FragmentActivity>
     implements ActivityDialogMethodParam<A, DialogFields> {
   @Override
   public Dialog onCreateDialog(A activity, DialogFields fields) {

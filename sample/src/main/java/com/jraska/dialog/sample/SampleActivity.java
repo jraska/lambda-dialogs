@@ -15,7 +15,7 @@ import com.jraska.dialog.LambdaDialogs;
 
 import java.util.Random;
 
-public class SampleActivity extends AppCompatActivity {
+public final class SampleActivity extends AppCompatActivity {
 
   @BindView(R.id.toolbar) Toolbar toolbar;
 
@@ -25,8 +25,6 @@ public class SampleActivity extends AppCompatActivity {
     setContentView(R.layout.activity_sample);
     ButterKnife.bind(this);
     setSupportActionBar(toolbar);
-
-    LambdaDialogs.validateEagerly(BuildConfig.DEBUG);
   }
 
   @OnClick(R.id.fab) void onFabClick() {

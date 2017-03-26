@@ -53,6 +53,20 @@ of Activity through method references.
  
 ```
 
+### Eager validation
+Lambda dialogs are based on method references being serializable for better code. It is too easy to do them wrong. This verifies you do everything all right.
+
+ ```java
+ // Will validate that methods passed are really serialzable in debug mode
+  @Override public void onCreate() {
+    super.onCreate();
+    LambdaDialogs.validateEagerly(BuildConfig.DEBUG);
+  }
+
+
+```
+
+
 ## Download
 
 Grab via Gradle:
