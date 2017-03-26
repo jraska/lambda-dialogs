@@ -26,14 +26,14 @@ android {
 apply plugin: 'me.tatarka.retrolambda'
 
 dependencies {
-  retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:2.3.0'
-  provided 'com.android.support:appcompat-v7:25.0.0'
-  provided 'org.projectlombok:lombok:1.16.10'
+  retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:2.5.1'
+  provided 'com.android.support:appcompat-v7:25.3.0'
+  provided 'org.projectlombok:lombok:1.16.16'
 
   testCompile 'junit:junit:4.12'
   testCompile 'org.mockito:mockito-all:1.10.19'
-  testCompile 'org.robolectric:robolectric:3.1.2'
-  testCompile 'io.github.benas:random-beans:3.3.0'
+  testCompile 'org.robolectric:robolectric:3.3.1'
+  testCompile 'io.github.benas:random-beans:3.6.0'
   testCompile 'com.squareup.assertj:assertj-android:1.1.1'
 }
 

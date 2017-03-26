@@ -36,25 +36,24 @@ android {
 }
 
 apply plugin: 'me.tatarka.retrolambda'
-apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'com.getkeepsafe.dexcount'
 
 dependencies {
-  retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:2.3.0'
+  retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:2.5.1'
 
   compile project(':lambda-dialogs')
 
-  compile 'com.android.support:appcompat-v7:24.2.0'
-  compile 'com.android.support:design:24.2.0'
+  compile 'com.android.support:appcompat-v7:25.3.0'
+  compile 'com.android.support:design:25.3.0'
 
-  compile 'com.jakewharton:butterknife:8.4.0'
-  apt 'com.jakewharton:butterknife-compiler:8.4.0'
+  compile 'com.jakewharton:butterknife:8.5.1'
+  annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
 
   compile 'com.afollestad.material-dialogs:core:0.9.0.1'
 
-  testCompile 'com.android.support:support-annotations:24.2.0'
+  testCompile 'com.android.support:support-annotations:25.3.0'
   testCompile 'junit:junit:4.12'
   testCompile 'org.mockito:mockito-all:1.10.19'
-  testCompile 'org.robolectric:robolectric:3.1.2'
+  testCompile 'org.robolectric:robolectric:3.3.1'
   testCompile 'com.squareup.assertj:assertj-android:1.1.1'
 }
