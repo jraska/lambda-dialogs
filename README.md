@@ -16,28 +16,13 @@ if you implement dialog fragment you need to put logic with dependencies into di
 some callback mechanism back to Activity.
 
 Lambda Dialogs use power of method references to delegate dialog functionality back to Activities. All the logic 
-remains in Activity and dialog events are only delegated to current instance 
-of Activity through method references.
+remains in Activity and you can set your listeners directly. No custom dialog fragments anymore.
 
 ## Usage
-
-```java
- // Simple dialog with basic fields delegating the callbacks to current activity
- LambdaDialogs.builder(this)
-        .positiveText(android.R.string.ok)
-        .positiveMethod(SampleActivity::onDialogPositiveClicked)
-        .negativeText(android.R.string.cancel)
-        .negativeMethod(SampleActivity::onDialogNegativeClicked)
-        .neutralText("Neutral")
-        .neutralMethod(SampleActivity::onDialogNeutralClicked)
-        ...
-        .show();
-        
- ```
  ```java
- // Delegate creation of dialog to activity to do more complex stuff
+ // Delegate creation of dialog to activity
  LambdaDialogs.delegate(this)
-         .parameter("Parameter title")
+         .parameter("Parameter title") // Can be any Parcelable or Serializable
          .method(SampleActivity::createDialog)
          .validateEagerly(BuildConfig.DEBUG)
          .show();
@@ -57,7 +42,8 @@ of Activity through method references.
 Lambda dialogs are based on method references being serializable for better code. It is too easy to do them wrong. This verifies you do everything all right.
 
  ```java
- // Will validate that methods passed are really serialzable in debug mode
+ // Application.onCreate().
+ // Will validate that methods passed are really serializable in debug mode
   @Override public void onCreate() {
     super.onCreate();
     LambdaDialogs.validateEagerly(BuildConfig.DEBUG);
