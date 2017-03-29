@@ -57,7 +57,7 @@ Lambda dialogs are based on method references being serializable for better code
 
 Grab via Gradle:
 ```groovy
-compile 'com.jraska:lambda-dialogs:0.3.1'
+compile 'com.jraska:lambda-dialogs:0.4.0'
 ```
 
 You will need to setup [Retrolambda][Retrolambda] for to get real advantage of Lambda Dialogs with method references. 
