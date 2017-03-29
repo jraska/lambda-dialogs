@@ -12,7 +12,9 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
+import org.robolectric.shadows.ShadowDialog;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
@@ -23,16 +25,19 @@ import static org.mockito.Mockito.when;
 public class LambdaDialogsDelegateTest {
   TestActivity activity;
 
-  @Mock ActivityDialogMethodParam<TestActivity, Object> verificationFactory;
+  @Mock ActivityDialogMethodParam<TestActivity, Object> mockActivityWithParameterMethod;
+  @Mock ActivityMethod<TestActivity> mockActivityMethod;
 
   @Before
   public void setUp() {
     MockitoAnnotations.initMocks(this);
 
     activity = Robolectric.setupActivity(TestActivity.class);
-    activity.verificationFactory = verificationFactory;
-    when(verificationFactory.onCreateDialog(any(), any()))
+    activity.verificationFactory = mockActivityWithParameterMethod;
+    when(mockActivityWithParameterMethod.onCreateDialog(any(), any()))
         .thenReturn(new Dialog(RuntimeEnvironment.application));
+
+    LambdaDialogs.validateEagerly(true);
   }
 
   @Test
@@ -41,7 +46,7 @@ public class LambdaDialogsDelegateTest {
         .method(TestActivity::createDialog)
         .show();
 
-    verify(verificationFactory).onCreateDialog(any(), eq(null));
+    verify(mockActivityWithParameterMethod).onCreateDialog(any(), eq(null));
   }
 
   @Test
@@ -51,7 +56,7 @@ public class LambdaDialogsDelegateTest {
         .method(TestActivity::createDialog)
         .show();
 
-    verify(verificationFactory).onCreateDialog(any(), eq("text"));
+    verify(mockActivityWithParameterMethod).onCreateDialog(any(), eq("text"));
   }
 
   @Test
@@ -62,7 +67,35 @@ public class LambdaDialogsDelegateTest {
         .method(TestActivity::createDialog)
         .show();
 
-    verify(verificationFactory).onCreateDialog(any(), eq(intent));
+    verify(mockActivityWithParameterMethod).onCreateDialog(any(), eq(intent));
+  }
+
+  @Test
+  public void whenCanceled_thenCancelMethodCalled() {
+    DelegateDialog dialog = LambdaDialogs.delegate(activity)
+        .method(TestActivity::createDialog)
+        .cancelMethod(mockActivityMethod)
+        .cancelable(true)
+        .build();
+
+    assertThat(dialog.isCancelable()).isTrue();
+
+    dialog.show(activity.getSupportFragmentManager(), "tag");
+    ShadowDialog.getLatestDialog().cancel();
+
+    verify(mockActivityMethod).call(eq(activity));
+  }
+
+  @Test
+  public void whenDismissed_thenDismissMethodCalled() {
+    LambdaDialogs.delegate(activity)
+        .method(TestActivity::createDialog)
+        .dismissMethod(mockActivityMethod)
+        .show("Tag");
+
+    ShadowDialog.getLatestDialog().dismiss();
+
+    verify(mockActivityMethod).call(eq(activity));
   }
 
   static class TestActivity extends FragmentActivity {
