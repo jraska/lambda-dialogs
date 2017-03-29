@@ -6,7 +6,6 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.MaterialDialog.SingleButtonCallback;
 import com.jraska.dialog.ActivityDialogMethodParam;
 import com.jraska.dialog.ActivityMethod;
-import com.jraska.dialog.DialogFields;
 
 public final class MaterialDialogFactory<A extends FragmentActivity>
     implements ActivityDialogMethodParam<A, DialogFields> {

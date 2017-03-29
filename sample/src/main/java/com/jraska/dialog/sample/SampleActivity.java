@@ -10,10 +10,7 @@ import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import com.jraska.dialog.FieldsDialog;
 import com.jraska.dialog.LambdaDialogs;
-
-import java.util.Random;
 
 public final class SampleActivity extends AppCompatActivity {
 
@@ -28,24 +25,25 @@ public final class SampleActivity extends AppCompatActivity {
   }
 
   @OnClick(R.id.fab) void onFabClick() {
-    setupBuilder()
+    LambdaDialogs.delegate(this)
+        .parameter(setupBuilder().build())
+        .method(new AlertDialogFactory<>())
+        .dismissMethod(SampleActivity::onDialogDismiss)
+        .cancelMethod(SampleActivity::onDialogCancel)
         .show();
   }
 
-  private FieldsDialog.Builder<SampleActivity> setupBuilder() {
-    return LambdaDialogs.builder(this)
-        .icon(android.R.drawable.ic_dialog_alert)
+  private DialogFields.Builder setupBuilder() {
+    return DialogFields.builder(this)
+        .iconRes(android.R.drawable.ic_dialog_alert)
         .message("Test message")
-        .title(R.string.app_name)
-        .positiveText(android.R.string.ok)
+        .title(getString(R.string.app_name))
+        .positiveText("OK")
         .positiveMethod(SampleActivity::onDialogPositiveClicked)
-        .negativeText(android.R.string.cancel)
+        .negativeText("Cancel")
         .negativeMethod(SampleActivity::onDialogNegativeClicked)
         .neutralText("Neutral")
-        .cancelable(new Random().nextBoolean())
-        .neutralMethod(SampleActivity::onDialogNeutralClicked)
-        .cancelMethod(SampleActivity::onDialogCancel)
-        .dismissMethod(SampleActivity::onDialogDismiss);
+        .neutralMethod(SampleActivity::onDialogNeutralClicked);
   }
 
   void onDialogPositiveClicked() {
@@ -110,8 +108,11 @@ public final class SampleActivity extends AppCompatActivity {
 
   @OnClick(R.id.material_dialog)
   void showMaterialDialog() {
-    setupBuilder()
-        .dialogFactory(new MaterialDialogFactory<>())
+    LambdaDialogs.delegate(this)
+        .parameter(setupBuilder().build())
+        .method(new MaterialDialogFactory<>())
+        .dismissMethod(SampleActivity::onDialogDismiss)
+        .cancelMethod(SampleActivity::onDialogCancel)
         .show();
   }
 

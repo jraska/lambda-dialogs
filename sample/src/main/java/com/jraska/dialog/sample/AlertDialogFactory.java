@@ -1,8 +1,10 @@
-package com.jraska.dialog;
+package com.jraska.dialog.sample;
 
 import android.content.DialogInterface.OnClickListener;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
+import com.jraska.dialog.ActivityDialogMethodParam;
+import com.jraska.dialog.ActivityMethod;
 
 public final class AlertDialogFactory<A extends FragmentActivity>
     implements ActivityDialogMethodParam<A, DialogFields> {

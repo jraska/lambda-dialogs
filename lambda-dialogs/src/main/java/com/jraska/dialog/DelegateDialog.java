@@ -165,7 +165,6 @@ public final class DelegateDialog extends DialogFragment {
       return new Builder<A, P>(this, method, provider, value)
           .validateEagerly(validateEagerly);
     }
-
   }
 
   public static class Builder<A extends FragmentActivity, P> extends BaseBuilder<A, Builder<A, P>> {
@@ -205,6 +204,8 @@ public final class DelegateDialog extends DialogFragment {
     private void validate() {
       validator.validateSerializable(method);
       validator.validateSerializable(parameterProvider);
+      validator.validateSerializable(cancelAction);
+      validator.validateSerializable(dismissAction);
     }
 
     public void show() {

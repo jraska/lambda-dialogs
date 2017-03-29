@@ -28,10 +28,15 @@ public class LambdaDialogsBuilderTest {
     String neutral = "12asi";
     String negative = "98io8";
 
-    LambdaDialogs.builder(activity)
+    DialogFields fields = DialogFields.builder(activity)
         .positiveText(positive)
         .neutralText(neutral)
         .negativeText(negative)
+        .build();
+
+    LambdaDialogs.delegate(activity)
+        .parameter(fields)
+        .method(new AlertDialogFactory<>())
         .show();
 
     AlertDialog dialog = (AlertDialog) ShadowDialog.getLatestDialog();
